@@ -1,0 +1,137 @@
+﻿b {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
+}
+
+div.filters {
+	display: inline-block;
+}
+
+.filter {
+	background-color: #e0ecf1;
+	inline-block;
+	padding: 2px 4px;
+	border-radius: 10px;
+	margin-right: 4px;
+}
+
+	.filter:hover {
+		background: #C6E2EE;
+	}
+
+	.filter a {
+		visibility: hidden;
+		background-color: white;
+		border-radius: 10px;
+		display: inline-block;
+		padding: 0 4px;
+		cursor: pointer;
+	}
+
+	.filter:hover a {
+		visibility: visible;
+	}
+
+.facets-wrapper br {
+	font-size: 1px;
+	height: 1px;
+}
+
+.facets {
+	display: inline-block;
+}
+
+ul.facets {
+	margin: 0;
+	padding-left: 0;
+}
+
+p.facets {
+	margin: 0;
+}
+
+.facets li {
+	display: inline;
+}
+
+.facets li {
+	border-left: 1px solid #888;
+	padding-left: 4px;
+}
+
+	.facets li:first-child {
+		border-left-width: 0;
+		padding-left: 0;
+	}
+
+.facets a {
+	cursor: pointer;
+}
+
+h4 > .size {
+	font-weight: normal;
+	font-size: smaller;
+}
+
+ul.autocomplete-popup {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	border: 1px solid #000;
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+	background: #fff;
+}
+
+	ul.autocomplete-popup > li {
+	}
+
+		ul.autocomplete-popup > li > a {
+			display: block;
+		}
+
+			ul.autocomplete-popup > li > a:hover, ul.autocomplete-popup > li.selected > a {
+				background-color: #EEE;
+			}
+
+ul.pagination {
+	list-style: none;
+	float: right;
+	clear: both;
+}
+
+	ul.pagination li {
+		display: inline-block;
+		float: left;
+		padding: 0 0.25ex;
+	}
+
+.stars-bg {
+	background-color: #DDD;
+	width: 80px;
+	height: 16px;
+	float: left;
+	clear: left;
+	margin-right: 8px;
+}
+
+.stars-bar {
+	background-color: red;
+	height: 16px;
+}
+
+.stars {
+	background-image: url('../images/stars.png');
+	width: 80px;
+	height: 16px;
+}
+
+.icon {
+	float: left;
+	margin-right: 8px;
+}

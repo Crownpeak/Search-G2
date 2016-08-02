@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<script src="http://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.js"></script>
+	<script src="http://searchg2-assets.crownpeak.net/crownpeak.searchg2.autocomplete-1.0.0.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
+	<link href="../css/styles.css" rel="stylesheet" />
+</head>
+<body id="masterBody">
+	
+	<input type="search" id="searchInput" placeholder="Search" autofocus data-bind="value: query, event: { keyup: searchKeyUp }, valueUpdate:'afterkeydown'">
+	<input type="button" class="button" value="Search" data-bind="click: search">
+
+	<!-- ko with: result -->
+	<!-- ko template: { name: "pager" } --><!-- /ko -->
+
+	<div>
+
+		<!-- ko if: response.docs && response.docs.length > 0 -->
+
+		<div>
+
+			<p>Showing search results for: "<span data-bind="text: $root.lastQuery"></span>"</p>
+			<p class="matches">
+				Your search term produced <span data-bind="text: response.numFound"></span>
+				match<!-- ko ifnot: response.numFound == 1 -->es<!-- /ko -->.
+				<!-- ko if: response.numFound == 1 -->
+				<span>The only result is displayed.</span>
+				<!-- /ko -->
+				<!-- ko ifnot: response.numFound == 1 -->
+				<span>Results <span data-bind="text: response.start + 1"></span> to <span data-bind="text: response.start + response.docs.length"></span> are displayed.</span>
+				<!-- /ko -->
+			</p>
+
+			<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+
+			<!-- ko if: typeof facet_counts !== "undefined" -->
+			<div data-bind="with: facet_counts.facet_fields" class="facets_wrapper">
+				<!-- ko foreach: Object.keys($data) -->
+				<p class="facets">
+					Facets for <span data-bind="text: $data"></span>:
+				</p>
+				<div data-bind="with: $parent[$data]" class="facets">
+					<ul data-bind="foreachpair: $data" class="facets">
+						<li><a href="#" data-bind="click: $root.addFilter, attr: { field: $parents[1] }"><span data-bind="text: $data[0]"></span> (<span data-bind="text: $data[1]"></span>)</a></li>
+					</ul>
+				</div>
+				<br />
+				<!-- /ko -->
+			</div>
+			<!-- /ko -->
+
+			<div data-bind="if: $root.filterQueries().length > 0">
+				<p>
+					Active filters:
+					<div data-bind="foreach: $root.filterQueries" class="filters">
+						<span class="filter">
+							<span data-bind="text: $data.split(':')[0]"></span>:
+							<span data-bind="text: $data.split(':')[1].replace(/^.|.$/g, '')"></span>
+							<a data-bind="click: $root.removeFilter">x</a>
+						</span>
+					</div>
+					<a href="#" data-bind="click: $root.clearFilters">Clear all</a>
+				</p>
+			</div>
+
+		</div>
+
+		<div data-bind="foreach: response.docs">
+			<div class="result">
+				<div class="stars-bg" data-bind="attr: { title: ($data.normalizedScore * 5).toString().substr(0, 3).replace('.0', '') + ' stars out of 5' }">
+					<div class="stars-bar" data-bind="style: { width: ($data.normalizedScore * 80) + 'px' }">
+						<div class="stars"></div>
+					</div>
+				</div>
+				<img class="icon" alt="Icon" data-bind="attr: { src: $root.getIcon($data.type_short) }" />
+				<h4 class="title">
+					<span data-bind="text: ($parent.response.start + $index() + 1) + '. ' + ($data.title || '[No title]')"></span>
+					(<span class="size" data-bind="text: $root.formatSize($data.contentLength)"></span>)
+				</h4>
+				<h5>Last updated: <span data-bind="text: $root.formatDate($data.date)"></span></h5>
+				<p class="excerpt">
+					<span class="result-section"></span>
+					<!-- ko if: $data.content_hl -->
+					<span data-bind="html: $data.content_hl"></span>
+					<!-- /ko -->
+					<!-- ko ifnot: $data.content_hl -->
+					<span data-bind="text: $root.trimLength($data.content, 230)"></span>
+					<!-- /ko -->
+				</p>
+				<!-- NOTE: use $data.proxy_url if you are using a proxy result page -->
+				<!-- ko if: $data.url_hl -->
+				<a data-bind="attr: { href: $data.url }, html: $data.url_hl.replace(/(^...|...$)/g, '')" class="read-more"></a>
+				<!-- /ko -->
+				<!-- ko ifnot: $data.url_hl -->
+				<a data-bind="attr: { href: $data.url }, text: $data.url" class="read-more"></a>
+				<!-- /ko -->
+			</div>
+		</div>
+
+		<!-- /ko -->
+		<!-- ko if: !response.docs || response.docs.length <= 0 -->
+		<p>Sorry, no results found for <b data-bind="text: $root.lastQuery"></b>.</p>
+		<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+		<!-- /ko -->
+	</div>
+
+	<!-- ko template: { name: "pager" } --><!-- /ko -->
+	<!-- /ko -->
+
+	<script type="text/html" id="pager">
+		<!-- Pager template. It is used at the top and bottom of the results -->
+		<ul class="pagination" data-bind="if: pager.pages && pager.pages.length > 1">
+			<!-- ko foreach: pager.pages -->
+			<!-- ko ifnot: $parent.pager.page == $data -->
+			<li><a data-bind="attr: { href: $data }, text: $data, click: $root.changePage"></a></li>
+			<!-- /ko -->
+			<!-- ko if: $parent.pager.page == $data -->
+			<li><a data-bind="text: $data"></a></li>
+			<!-- /ko -->
+			<!-- /ko -->
+		</ul>
+
+	</script>
+
+	<script type="text/html" id="didyoumean">
+		<!-- Did You Mean template. Used in the standard results, and also when no results are found -->
+		<!-- We only want the "Did you mean" on page 1 -->
+		<div data-bind="if: typeof didYouMean !== 'undefined' && (!pager || !pager.page || pager.page == 1)" class="didyoumean_wrapper">
+			<p>Did you mean: </p>
+			<ul data-bind="foreach: didYouMean" class="didyoumean">
+				<li>
+					<a href="#" data-bind="html: $data.display, click: $root.suggestion"></a>
+				</li>
+			</ul>
+		</div>
+
+	</script>
+
+	<script>
+
+		var ICON_FOLDER = "images/icons/";
+		var ICONS = ",doc,htm,pdf,ppt,txt,xls,";
+		var UNKNOWN_ICON = "images/icons/txt.png";
+
+		// Set some properties on the CrownPeakSearch object
+		var cps = new CrownPeakSearch();
+		cps.collection("www.crownpeak.com");
+		cps.facets(["title", "type"]);
+		cps.maxFacets(6);
+		cps.highlight(true);
+		//cps.resultProxy("http://test/proxy?search=%%query%%&result=%%index%%&url=");
+		//cps.sort(["url desc"]);
+		//cps.rows(2);
+		cps.spellcheck(true);
+		//cps.parameters("&hl=true&hl.fl=*");
+
+		/// <summary>
+		/// The ViewModel object manages communication between our ui and the search
+		/// </summary>
+		function ViewModel() {
+			var self = this;
+			self.query = ko.observable("");
+			self.lastQuery = ko.observable("");
+			self.page = ko.observable(1);
+			self.id = ko.observable("");
+			self.result = ko.observable(false);
+			self.suggestions = ko.observableArray([]);
+			self.filterQueries = ko.observableArray([]);
+
+			self.addFilter = function (filter, event) {
+					// Push a new filter onto the end of our collection
+					var value = filter[0];
+					// TODO: this feels dirty - is there a better way?
+					var e = event.originalEvent.srcElement;
+					var field = e.getAttribute("field");
+					if (!field) field = e.parentElement.getAttribute("field");
+					self.filterQueries.push(field + ":\"" + value + "\"");
+					self.search();
+				},
+				self.removeFilter = function (filter, event) {
+					// Remove the first filter that matches this one
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i] == filter) {
+							self.filterQueries().splice(i, 1);
+							self.search();
+							break;
+						}
+					}
+				},
+				self.clearFilters = function () {
+					self.filterQueries([]);
+					self.search();
+				},
+				self.search = function () {
+					self.lastQuery(self.query());
+					self.result(false);
+
+					// Run the query, and queue up our function to run when the results are ready
+					cps.query(self.query(), self.page(), self.filterQueries(), self.id())
+						.done(function (data) {
+							// We can make updates to the data before it is consumed by the page here
+							// E.g. here we will limit facets to 5 suggestions (10 pairs) per facet
+							//if (data && data.facet_counts && data.facet_counts.facet_fields) {
+							//	var ff = data.facet_counts.facet_fields;
+							//	var keys = Object.keys(ff);
+							//	for (var i = 0, len = keys.length; i < len; i++) {
+							//		ff[keys[i]] = ff[keys[i]].splice(0, 10);
+							//	}
+							//}
+							// We would like some extra buttons on our pager
+							if (data.pager.page > 1) {
+								data.pager.pages.unshift("<<","<");
+							}
+							if (data.pager.page < data.pager.total) {
+								data.pager.pages.push(">",">>");
+							}
+							self.id("");
+							if (data.crownpeak && data.crownpeak.logging && data.crownpeak.logging.id)
+								self.id(data.crownpeak.logging.id);
+							self.result(data);
+						});
+				},
+				self.changePage = function (n) {
+					// Go to the page with the number that they clicked on
+					// Turn text into the relevant page number before we go
+					if (n === "<<") n = 1;
+					else if (n === "<") n = Math.max(1, self.page() - 1);
+					else if (n === ">") n = Math.min(self.page() + 1, self.result().pager.total);
+					else if (n === ">>") n = self.result().pager.total;
+					self.page(n);
+					self.search();
+				},
+				self.reset = function () {
+					// ... then reset query and page parameters, and ditch the results
+					self.query("");
+					self.page(1);
+					self.id("");
+					self.filterQueries([]);
+					self.result(false);
+				},
+				self.searchKeyUp = function () {
+					// If the user presses return on the search box, run the search
+					if (event.keyCode === 13) {
+						// TODO: need to make sure the last value is copied out of the query box somehow
+						self.page(1);
+						self.id("");
+						self.search();
+						// Hide the autocomplete popup if it was showing
+						cpa.hide();
+					}
+				},
+				self.suggestion = function (suggestion) {
+					// If the user clicks on a "did you mean" link, they'll come here
+					self.query(suggestion.query);
+					self.page(1);
+					self.id("");
+					self.filterQueries([]);
+					self.search();
+				},
+				self.getIcon = function (type) {
+					if (type) {
+						var t = type.substr(0, 3).toLowerCase();
+						var i = ICONS.indexOf("," + t);
+						if (i >= 0) {
+							return ICON_FOLDER + ICONS.substr(i + 1, ICONS.indexOf(",", i + 1) - i - 1) + ".png";
+						}
+					}
+					return UNKNOWN_ICON;
+				},
+				self.trimLength = function (str, len) {
+					len |= 230;
+					if (str && str.length && str.length > len) {
+						return str.substr(0, str.lastIndexOf(" ", len)) + (str.length >= len ? " ..." : "");
+					}
+					return str;
+				},
+				self.formatSize = function (num) {
+					if (num == 0) return "0";
+					var UNITS = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "XB", "SB", "DB"];
+					var i = parseInt(Math.floor(Math.log(Math.abs(num)) / Math.log(1024)));
+					return Math.round(num / Math.pow(1024, i), 2) + ' ' + UNITS[i];
+				},
+				self.formatDate = function (date) {
+					date = new Date(date);
+					var result = [];
+					result.push(date.getDate());
+					result.push(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()]);
+					result.push(date.getFullYear());
+					return result.join(" ");
+				}
+		}
+
+		/// <summary>
+		/// Custom binding context to convert data in the form [name,value,name2,value2,...]
+		/// into the form [[name,value],[name2,value2],...]
+		/// </summary>
+		ko.bindingHandlers.foreachpair = {
+			init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				var data = [];
+				// Convert to pairs
+				for (var i = 0, len = bindingContext.$data.length; i < len; i += 2) {
+					data.push([bindingContext.$data[i], bindingContext.$data[i + 1]]);
+				}
+				bindingContext.$data = data;
+				return ko.bindingHandlers.foreach.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+			},
+			update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				return ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+			}
+		};
+
+		// Initialise knockout
+		var vm = new ViewModel();
+		ko.applyBindings(vm);
+		
+		// Connect the autocomplete functionality to our input box
+		var cpa = new CrownPeakAutocomplete();
+		cpa.init(document.getElementById("searchInput"), {
+			callback: function (t) {
+				// This is called when the user picks something from the autocomplete dropdown
+				vm.query(t);
+				vm.page(1);
+				vm.id("");
+				vm.filterQueries([]);
+				vm.search();
+			}
+		});
+
+	</script>
+
+</body>
+
+</html>
