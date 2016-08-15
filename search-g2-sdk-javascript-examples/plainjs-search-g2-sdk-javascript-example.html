@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.js"></script>
+	<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2.autocomplete-1.0.0.js"></script>
+	<link href="../css/styles.css" rel="stylesheet" />
+</head>
+<body id="masterBody">
+
+	<input type="search" id="searchInput" placeholder="Search" autofocus>
+	<input type="button" id="searchButton" class="button" value="Search">
+
+	<div id="pagerTop" class="hide">
+		<ul id="paginationTop" class="pagination"></ul>
+	</div>
+
+	<div id="searchResults" class="hide">
+
+		<div id="resultsHeader" class="hide">
+
+			<p>Showing search results for: "<span id="lastQuery"></span>"</p>
+			<p class="matches">
+				Your search term produced <span id="numFound"></span>
+				match<span id="numFoundPlural" class="hide">es</span>.
+				<span id="numFoundSingle" class="hide">The only result is displayed.</span>
+				<span id="numFoundMultiple" class="hide">Results <span id="first"></span> to <span id="last"></span> are displayed.</span>
+			</p>
+			
+			<div id="didYouMeanResults"></div>
+
+			<div id="facetsWrapper" class="facets_wrapper hide">
+			</div>
+
+			<div id="filterQueriesWrapper" class="hide">
+			</div>
+
+		</div>
+
+		<div id="resultsWrapper">
+		</div>
+
+		<div id="noResults" class="hide">
+			<p>Sorry, no results found for <b id="noResultsLastQuery"></b>.</p>
+			<div id="didYouMeanNoResults"></div>
+		</div>
+	</div>
+	
+	<div id="pagerBottom" class="hide">
+		<ul id="paginationBottom" class="pagination">
+		</ul>
+	</div>
+
+	<script>
+
+		var ICON_FOLDER = "../images/icons/";
+		var ICONS = ",doc,htm,pdf,ppt,txt,xls,";
+		var UNKNOWN_ICON = "../images/icons/txt.png";
+
+		// Set some properties on the CrownPeakSearch object
+		var cps = new CrownPeakSearch();
+		cps.collection("www.crownpeak.com");
+		cps.facets(["title", "type"]);
+		cps.maxFacets(6);
+		cps.highlight(true);
+		//cps.resultProxy("http://test/proxy?search=%%query%%&result=%%index%%&url=");
+		//cps.sort(["url desc"]);
+		//cps.rows(2);
+		cps.spellcheck(true);
+		//cps.parameters("&hl=true&hl.fl=*");
+
+		var currentPage = 1;
+		var loggingId = "";
+		var currentFilterQueries = [];
+		var maxPage = 1;
+
+		function addFilter(field, value) {
+			// Push a new filter onto the end of our collection
+			currentFilterQueries.push(field + ":\"" + value + "\"");
+			filterQueries(currentFilterQueries);
+			search();
+		}
+		function removeFilter(field, value) {
+			// Remove the first filter that matches this one
+			var facets = filterQueries();
+			for (var i = 0, len = facets.length; i < len; i++) {
+				if (facets[i] == field + ":\"" + value + "\"") {
+					facets.splice(i, 1);
+					filterQueries(facets);
+					search();
+					break;
+				}
+			}
+		}
+		function clearFilters() {
+			filterQueries([]);
+			search();
+		}
+		function newSearch() {
+			page(1);
+			loggingId = "";
+			clearFilters();
+		}
+		function search() {
+			var query = searchInput.value;
+
+			lastQuery(query);
+			document.getElementById("searchResults").style.display = "none";
+			document.getElementById("pagerTop").style.display = "none";
+			document.getElementById("pagerBottom").style.display = "none";
+
+			// Run the query, and queue up our function to run when the results are ready
+			cps.query(query, page(), filterQueries(), loggingId)
+				.done(function (data) {
+					// We can make updates to the data before it is consumed by the page here
+					// E.g. here we will limit facets to 5 suggestions (10 pairs) per facet
+					//if (data && data.facet_counts && data.facet_counts.facet_fields) {
+					//	var ff = data.facet_counts.facet_fields;
+					//	var keys = Object.keys(ff);
+					//	for (var i = 0, len = keys.length; i < len; i++) {
+					//		ff[keys[i]] = ff[keys[i]].splice(0, 10);
+					//	}
+					//}
+					// We would like some extra buttons on our pager
+					if (data.pager.page > 1) {
+						data.pager.pages.unshift("<<", "<");
+					}
+					if (data.pager.page < data.pager.total) {
+						data.pager.pages.push(">", ">>");
+					}
+					loggingId = "";
+					if (data.crownpeak && data.crownpeak.logging && data.crownpeak.logging.id)
+						loggingId = data.crownpeak.logging.id;
+					showResults(data);
+			});
+		}
+		function showResults(data) {
+			var html = [];
+			var docs = data.response.docs;
+			if (docs && docs.length > 0) {
+				for (var i = 0, len = docs.length; i < len; i++) {
+					var doc = docs[i];
+					html.push("<div class='result'>");
+					html.push("  <div class='stars-bg' title='" + (doc.normalizedScore * 5).toString().substr(0, 3).replace('.0', '') + " stars out of 5'>");
+					html.push("    <div class='stars-bar' style='width: " + (doc.normalizedScore * 80) + "px'>");
+					html.push("      <div class='stars'></div>");
+					html.push("    </div>");
+					html.push("  </div>");
+
+					html.push("  <img class='icon' alt='Icon' src='" + getIcon(doc.type) + "' />");
+					html.push("  <h4 class='title'>");
+					html.push("    " + (data.response.start + i + 1) + '. ' + (doc.title || '[No title]'));
+					html.push(" <span class='size'>" + formatSize(doc.contentLength) + "</span>");
+					html.push("  </h4>");
+					html.push("  <h5>Last updated: " + formatDate(doc.date) + "</h5>");
+					html.push("  <p class='excerpt'>");
+					html.push("    <span class='result-section'></span>");
+					html.push(doc.content_hl || trimLength(doc.content, 230));
+					html.push("  </p>");
+					// NOTE: use doc.proxy_url if you are using a proxy result page
+					html.push("<a href='" + doc.url + "' class='read-more'>" + (doc.url_hl ? doc.url_hl.replace(/(^...|...$)/g, '') : doc.url) + "</a>");
+					html.push("</div>");
+				}
+			}
+			
+			document.getElementById("numFound").innerText = data.response.numFound;
+			document.getElementById("numFoundPlural").style.display = data.response.numFound != 1 ? "inline" : "none";
+			document.getElementById("numFoundSingle").style.display = data.response.numFound == 1 ? "inline" : "none";
+			document.getElementById("numFoundMultiple").style.display = data.response.numFound != 1 ? "inline" : "none";
+			document.getElementById("first").innerText = data.response.start + 1;
+			document.getElementById("last").innerText = data.response.start + docs.length;
+			document.getElementById("resultsHeader").style.display = docs.length > 0 ? "block" : "none";
+			document.getElementById("noResults").style.display = docs.length == 0 ? "block" : "none";
+			document.getElementById("resultsWrapper").innerHTML = html.join("");
+			showDidYouMean(docs.length == 0 ? "didYouMeanNoResults" : "didYouMeanResults", data);
+			showPager(data);
+			showFacets(data);
+			showFilterQueries();
+			document.getElementById("searchResults").style.display = "block";
+		}
+		function showPager(data) {
+			var html = [];
+
+			maxPage = 1;
+			var usePager = data.pager && data.pager.pages;
+			if (usePager) {
+				for (var i = 0, len = data.pager.pages.length; i < len; i++) {
+					var p = data.pager.pages[i];
+					if (p == page()) {
+						html.push("<li><a>" + p + "</a></li>");
+					} else {
+						html.push("<li><a href='javascript:changePage(\"" + p + "\")'>" + p + "</a></li>");
+					}
+				}
+				maxPage = data.pager.total;
+			}
+			document.getElementById("pagerTop").style.display = usePager ? "block" : "none";
+			document.getElementById("pagerBottom").style.display = usePager ? "block" : "none";
+			document.getElementById("paginationTop").innerHTML = html.join("");
+			document.getElementById("paginationBottom").innerHTML = html.join("");
+		}
+		function showDidYouMean(el, data) {
+			var html = [];
+			if (data.didYouMean && data.didYouMean.length > 0) {
+				html.push("<p>Did you mean: </p>");
+				html.push("<ul class='didyoumean'>");
+				for (var i = 0, len = data.didYouMean.length; i < len; i++) {
+					var s = data.didYouMean[i];
+					html.push("  <li><a href='javascript:suggestion(\"" + s.query.replace(/"/g, "&quot;") + "\")'>" + s.display + "</a></li>");
+				}
+				html.push("</ul");
+			}
+			if (typeof(el) === "string") el = document.getElementById(el);
+			el.innerHTML = html.join("");
+		}
+		function showFacets(data) {
+			var html = [];
+
+			var useFacets = data.facet_counts && data.facet_counts.facet_fields;
+			if (useFacets) {
+				for (var facet in data.facet_counts.facet_fields) {
+					html.push("<p class='facets'>");
+					html.push("Facets for " + facet + ":");
+					html.push("</p>");
+
+					html.push("<div class='facets'>");
+					html.push("  <ul class='facets'>");
+					var facetField = data.facet_counts.facet_fields[facet];
+					for (var i = 0, len = facetField.length; i < len; i += 2) {
+						html.push("<li> <a href='javascript:addFilter(\"" + facet.replace(/"/g, "&quot;") + "\", \"" + facetField[i].replace(/"/g, "&quot;") + "\")'>" + facetField[i] + " (" + facetField[i + 1] + ")</a> </li>");
+					}
+					html.push("  </ul>");
+					html.push("</div>");
+					html.push("<br/>");
+				}
+			}
+			var facetsWrapper = document.getElementById("facetsWrapper");
+			facetsWrapper.style.display = useFacets ? "block" : "none";
+			facetsWrapper.innerHTML = html.join("");
+		}
+		function showFilterQueries() {
+			var html = [];
+
+			var fq = filterQueries();
+			if (fq.length > 0) {
+				html.push("<p>Active filters: ");
+				for (var i = 0, len = fq.length; i < len; i++) {
+					var filter = fq[i].split(":");
+					html.push("<div class='filters'>");
+					html.push("  <span class='filter'>");
+					html.push(filter[0] + ": " + filter[1].replace(/^.|.$/g, ''));
+					html.push("<a href='javascript:removeFilter(\"" + filter[0].replace(/"/g, "&quot;") + "\", " + filter[1] + ")'>x</a>");
+					html.push("  </span>");
+					html.push("</div>");
+				}
+				html.push("<a href='javascript:clearFilters()'>Clear all</a>");
+				html.push("</p>");
+			}
+
+			var fqWrapper = document.getElementById("filterQueriesWrapper");
+			fqWrapper.style.display = html.length > 0 ? "block" : "none";
+			fqWrapper.innerHTML = html.join("");
+		}
+		function changePage(n) {
+			// Go to the page with the number that they clicked on
+			// Turn text into the relevant page number before we go
+			if (n === "<<") n = 1;
+			else if (n === "<") n = Math.max(1, currentPage - 1);
+			else if (n === ">") n = Math.min(currentPage + 1, maxPage);
+			else if (n === ">>") n = maxPage;
+			else n = parseInt(n);
+			page(n);
+			search();
+		}
+		function reset() {
+			// ... then reset query and page parameters, and ditch the results
+			searchInput.value = "";
+			page(1);
+			filterQueries = [];
+			document.getElementById("searchResults").style.display = "none";
+		}
+		function searchKeyUp(event) {
+			// If the user presses return on the search box, run the search
+			if (event.keyCode === 13) {
+				newSearch();
+				// Hide the autocomplete popup if it was showing
+				cpa.hide();
+			}
+		}
+		function suggestion(sugg) {
+			// If the user clicks on a "did you mean" link, they'll come here
+			lastQuery(sugg);
+			page(1);
+			filterQueries([]);
+			search();
+		}
+		function getIcon(type) {
+			if (type) {
+				if (type.indexOf("/") >= 0) type = type.split("/")[1];
+				var t = type.substr(0, 3).toLowerCase();
+				var i = ICONS.indexOf("," + t);
+				if (i >= 0) {
+					return ICON_FOLDER + ICONS.substr(i + 1, ICONS.indexOf(",", i + 1) - i - 1) + ".png";
+				}
+			}
+			return UNKNOWN_ICON;
+		};
+		function trimLength(str, len) {
+			len |= 230;
+			if (str && str.length && str.length > len) {
+				return str.substr(0, str.lastIndexOf(" ", len)) + (str.length >= len ? " ..." : "");
+			}
+			return str;
+		}
+		function formatSize(num) {
+			if (num == 0) return "0";
+			var UNITS = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "XB", "SB", "DB"];
+			var i = parseInt(Math.floor(Math.log(Math.abs(num)) / Math.log(1024)));
+			return Math.round(num / Math.pow(1024, i), 2) + ' ' + UNITS[i];
+		}
+		function formatDate(date) {
+			date = new Date(date);
+			var result = [];
+			result.push(date.getDate());
+			result.push(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()]);
+			result.push(date.getFullYear());
+			return result.join(" ");
+		}
+
+		function lastQuery(q) {
+			searchInput.value = q;
+			document.getElementById("noResultsLastQuery").innerText = q;
+			document.getElementById("lastQuery").innerText = q;
+		}
+		function page(n) {
+			if (n) currentPage = n;
+			return currentPage;
+		}
+		function filterQueries(f) {
+			if (f) currentFilterQueries = f;
+			return currentFilterQueries;
+		}
+
+		// Connect the autocomplete functionality to our input box
+		var cpa = new CrownPeakAutocomplete();
+		cpa.init(document.getElementById("searchInput"), {
+			callback: function (t) {
+				// This is called when the user picks something from the autocomplete dropdown
+				lastQuery(t);
+				page(1);
+				filterQueries([]);
+				search();
+			}
+		});
+
+		var searchInput = document.getElementById("searchInput");
+		var searchButton = document.getElementById("searchButton");
+
+		addEvent(searchInput, "keyup", searchKeyUp);
+		addEvent(searchButton, "click", newSearch);
+
+		function addEvent(el, event, fn) {
+			if (el.addEventListener) {
+				el.addEventListener(event, fn, false);
+			}
+			else if (el.attachEvent) {
+				el.attachEvent("on" + event, fn);
+			} else {
+				el["on" + event] = fn;
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>
