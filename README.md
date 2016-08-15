@@ -19,6 +19,35 @@ CrownPeak's Search platform is a highly-scalable, high-performance, enterprise-g
 * **Search G2 SDK** - CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
 
 
+## Wildcard Schema (Schemaless Design)
+
+In order to enable customers & partners to use Crownpeak Search for many use-cases across portfolio applications, Crownpeak has created a data schema that enables flexibility of data storage across multiple data-types.
+
+Where custom data is to be stored, the field prefix "custom_{type}_{fieldname}" can be used, as follows:
+
+* custom_i_{{fieldname}} - Integer (e.g. custom_i_myintegerfieldname);
+* custom_s_{{fieldname}} - String (e.g. custom_s_mystringfieldname) - String fields are not tokenized, meaning you can search for exact matches only (good for filtering);
+* custom_l_{{fieldname}} - Long (e.g. custom_l_mylongfieldname);
+* custom_t_{{fieldname}} - Text (e.g. custom_t_mytextfieldname) - Text fields are tokenized, enabling you to use search within them to return values;
+* custom_b_{{fieldname}} - Boolean (e.g. custom_b_mybooleanfieldname);
+* custom_f_{{fieldname}} - Float (e.g. custom_f_myfloatfieldname);
+* custom_d_{{fieldname}} - Double (e.g. custom_d_mydoublefieldname);
+* custom_dt_{{fieldname}} - Date & time (e.g. custom_dt_mydatetimefieldname) - Date & time fields require a specific format. See [https://cwiki.apache.org/confluence/display/solr/Working+with+Dates](https://cwiki.apache.org/confluence/display/solr/Working+with+Dates) for more information;
+* custom_p_{{fieldname}} - Location (e.g. custom_p_mylocationfieldname) - Location fields require a specific format. See [https://wiki.apache.org/solr/SpatialSearch](https://wiki.apache.org/solr/SpatialSearch) for more information;
+* custom_c_{{fieldname}} - Currency (e.g. custom_c_mycurrencyfieldname).
+
+By default, all fields contain single values, however, the following fields can store multiple values (arrays) if desired:
+
+* custom_is_{{fieldname}} - Multi-valued integer field (e.g. custom_is_mymultivaluedintegerfieldname);
+* custom_ss_{{fieldname}} - Multi-valued string field (e.g. custom_ss_mymultivaluedstringfieldname);
+* custom_ls_{{fieldname}} - Multi-valued long field (e.g. custom_ls_mymultivaluedlongfieldname);
+* custom_txt_{{fieldname}} - Multi-valued text field (e.g. custom_txt_mymultivaluedtextfieldname);
+* custom_bs_{{fieldname}} - Multi-valued boolean field (e.g. custom_bs_mymultivaluedbooleanfieldname);
+* custom_fs_{{fieldname}} - Multi-valued fload field (e.g. custom_fs_mymultivaluedfloatfieldname);
+* custom_ds_{{fieldname}} - Multi-valued double field (e.g. custom_ds_mymultivaluedoublefieldname);
+* custom_dts_{{fieldname}} - Multi-valued date & time field (e.g. custom_dts_mymultivalueddatetimefieldname).
+
+
 ## Private Content
 
 Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? CrownPeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
