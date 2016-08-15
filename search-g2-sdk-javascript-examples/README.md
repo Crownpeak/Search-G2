@@ -21,7 +21,7 @@ The following example shows you how to create a simple text-based search page, u
 
 ### Add References to Crownpeak Search G2 SDK, KnockoutJS & JQuery
 
-Within the <head/> element of your page, include the following references:
+Within the head element of your page, include the following references:
 
 ```
 <script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.min.js"></script>
@@ -31,7 +31,7 @@ Within the <head/> element of your page, include the following references:
 
 ### Configure Crownpeak Search G2 SDK Properties
 
-Within a new <script/> block in the <body/> of the page, initialize the Search G2 SDK Properties:
+Within a new script block in the body of the page, initialize the Search G2 SDK Properties:
 
 ```
 <script>
@@ -47,7 +47,7 @@ Within a new <script/> block in the <body/> of the page, initialize the Search G
 
 ### Add Basic KnockoutJS Template
 
-Add a basic KnockoutJS template to hold the results of our search query. Add this to the <body/> element of the page, above the script block created earlier:
+Add a basic KnockoutJS template to hold the results of our search query. Add this to the body element of the page, above the script block created earlier:
 
 ```
 <!-- ko with: result -->
