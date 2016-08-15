@@ -25,6 +25,7 @@ In order to enable customers & partners to use Crownpeak Search for many use-cas
 
 Where custom data is to be stored, the field prefix "custom_{type}_{fieldname}" can be used, as follows:
 
+```
 * custom_i_{{fieldname}} - Integer (e.g. custom_i_myintegerfieldname);
 * custom_s_{{fieldname}} - String (e.g. custom_s_mystringfieldname) - String fields are not tokenized, meaning you can search for exact matches only (good for filtering);
 * custom_l_{{fieldname}} - Long (e.g. custom_l_mylongfieldname);
@@ -35,9 +36,11 @@ Where custom data is to be stored, the field prefix "custom_{type}_{fieldname}" 
 * custom_dt_{{fieldname}} - Date & time (e.g. custom_dt_mydatetimefieldname) - Date & time fields require a specific format. See [https://cwiki.apache.org/confluence/display/solr/Working+with+Dates](https://cwiki.apache.org/confluence/display/solr/Working+with+Dates) for more information;
 * custom_p_{{fieldname}} - Location (e.g. custom_p_mylocationfieldname) - Location fields require a specific format. See [https://wiki.apache.org/solr/SpatialSearch](https://wiki.apache.org/solr/SpatialSearch) for more information;
 * custom_c_{{fieldname}} - Currency (e.g. custom_c_mycurrencyfieldname).
+```
 
 By default, all fields contain single values, however, the following fields can store multiple values (arrays) if desired:
 
+```
 * custom_is_{{fieldname}} - Multi-valued integer field (e.g. custom_is_mymultivaluedintegerfieldname);
 * custom_ss_{{fieldname}} - Multi-valued string field (e.g. custom_ss_mymultivaluedstringfieldname);
 * custom_ls_{{fieldname}} - Multi-valued long field (e.g. custom_ls_mymultivaluedlongfieldname);
@@ -46,7 +49,7 @@ By default, all fields contain single values, however, the following fields can 
 * custom_fs_{{fieldname}} - Multi-valued fload field (e.g. custom_fs_mymultivaluedfloatfieldname);
 * custom_ds_{{fieldname}} - Multi-valued double field (e.g. custom_ds_mymultivaluedoublefieldname);
 * custom_dts_{{fieldname}} - Multi-valued date & time field (e.g. custom_dts_mymultivalueddatetimefieldname).
-
+```
 
 ## Private Content
 
