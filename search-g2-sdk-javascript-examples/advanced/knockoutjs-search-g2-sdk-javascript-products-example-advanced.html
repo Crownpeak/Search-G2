@@ -1,0 +1,599 @@
+<!--
+THIS SOFTWARE IS PROVIDED "AS-IS," WITHOUT ANY EXPRESS OR IMPLIED WARRANTY.
+
+//IN NO EVENT SHALL CROWNPEAK TECHNOLOGY BE HELD LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF THE SOFTWARE.
+
+THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY WARRANTY; WITHOUT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. THERE IS NO WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS (INCLUDING BOTH CROWN PEAK TECHNOLOGY AND THE VARIOUS THIRD PARTY COPYRIGHT HOLDERS PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU, THE USER. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CrownPeak Cheese Shop</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+	<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<style type="text/css">
+		body {
+			overflow-y: scroll;
+		}
+		.facets h2 {
+			font-size: 100%;
+			font-weight: bold;
+			margin: 16px 0 0 0;
+			border-top: 1px solid #EEE;
+			padding-top: 4px;
+		}
+
+		.facets h2:first-child {
+			border-top-width: 0;
+			padding-top: 0;
+			margin-top: 0;
+		}
+
+		.facets ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.facets li a {
+			display: block;
+			background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkM0QTc4RTlENUE5MTExRTQ4OUZGREYxMDczNzI0MzU3IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkM0QTc4RTlFNUE5MTExRTQ4OUZGREYxMDczNzI0MzU3Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QzRBNzhFOUI1QTkxMTFFNDg5RkZERjEwNzM3MjQzNTciIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QzRBNzhFOUM1QTkxMTFFNDg5RkZERjEwNzM3MjQzNTciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz42KklpAAAAk1BMVEXR0Oqlo9WWk8739/v9/f6PjMq1s9y8ut/7+/2fndL6+v2pp9ecmdDk5POjodStq9mVks6TkMylotWxr9ve3e+zsdvo6PSkodTMy+e2tN2mpNWqqNe6uN/IxuWXlM6in9O/veGxr9q+vOCioNTY1+27ud+8uuDx8PiRjsubmNCbmdDf3vDx8fmUkc2Oi8r///////+7io21AAAAMXRSTlP///////////////////////////////////////////////////////////////8AH5pOIQAAAHZJREFUeNoUzUcCwjAMRFGlh9Bb6IRiOy7xWPc/HWKWf/GGmCfjrTcTM3HI8d8iMI1xRvNq/8jiSBrr9lAv0w6GHLJz6tMrwpMF6rIr31tY6SdVUKGO0jVu7WdQ6QItzvOaY3X/isNhI3qFKL78Ns66Rn5/AgwAAN8PnD/GGyMAAAAASUVORK5CYII=') no-repeat -50px 50%;
+			padding: 1px 20px 1px 4px;
+		}
+
+		.facets li .count {
+			float: right;
+		}
+
+		.facets li.selected {
+			border-radius: 5px;
+			box-shadow: 0 0 1pt 1pt #8e8bca;
+		}
+
+		.facets li.selected a {
+			background-position-x: 97%;
+		}
+
+		h4.title {
+			height: 2.4em;
+			margin: 1em 0 0 0;
+			line-height: 1.2em;
+			display: table;
+		}
+
+		div.result:nth-child(-n + 3) .title {
+			margin-top: 0;
+		}
+
+		h4.title a {
+			vertical-align: bottom;
+			display: table-cell;
+		}
+
+		p.excerpt {
+			max-height: 6em;
+			overflow: hidden;
+			margin: 0;
+		}
+		.stock {
+			margin-top: 50px;
+			background: none no-repeat 0 50%;
+			padding-left: 18px;
+			display: block;
+		}
+		.stock.in {
+			background-image: url('data:image/png;base64,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');
+		}
+		.stock.out {
+			background-image: url('data:image/png;base64,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');
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h1>The CrownPeak Cheese Shop</h1>
+			<p class="lead">An oasis of cheese in a harsh world.</p>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3 facets">
+				<!-- ko with: filterResult -->
+				<!-- ko if: typeof facet_counts !== "undefined" -->
+				<div class="facets_wrapper">
+					<!-- ko with: facet_counts.facet_fields -->
+						<!-- ko foreach: Object.keys($data) -->
+						<h2 data-bind="text: $root.getFilterName($data)"></h2>
+						<div data-bind="with: $parent[$data]">
+							<ul data-bind="foreachpair: $data">
+								<li><a href="#" data-bind="click: $root.toggleFilter, attr: { field: $parents[1] }"><span data-bind="text: $root.getFilterFieldName($parents[1], $data[0])"></span> <span class="count" data-bind="text: $data[1]"></span></a></li>
+							</ul>
+						</div>
+						<!-- /ko -->
+					<!-- /ko -->
+					<!-- ko with: facet_counts.facet_ranges -->
+					<!-- ko foreach: Object.keys($data) -->
+					<h2 data-bind="text: $root.getFilterName($data)"></h2>
+					<div data-bind="with: $parent[$data]">
+						<ul>
+							<li><a href="#" data-bind="click: $root.toggleFilterRange, attr: { field: $parent, range: $root.getFilterFieldRange($parent, 'before', $data.start) }"><span data-bind="html: $root.getFilterFieldName($parent, 'before', $data.start)"></span> <span class="count" data-bind="text: $data.before"></span></a></li>
+							<!-- ko with: $data.counts -->
+								<!-- ko foreachpair: $data -->
+								<li><a href="#" data-bind="click: $root.toggleFilterRange, attr: { field: $parents[2], range: $root.getFilterFieldRange($parents[2], $data[0], $data.start) }"><span data-bind="html: $root.getFilterFieldName($parents[2], $data[0])"></span> <span class="count" data-bind="text: $data[1]"></span></a></li>
+								<!-- /ko -->
+							<!-- /ko -->
+							<li><a href="#" data-bind="click: $root.toggleFilterRange, attr: { field: $parent, range: $root.getFilterFieldRange($parent, 'after', $data.end) }"><span data-bind="html: $root.getFilterFieldName($parent, 'after', $data.end)"></span> <span class="count" data-bind="text: $data.after"></span></a></li>
+						</ul>
+					</div>
+					<!-- /ko -->
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+				<!-- /ko -->
+			</div>
+			<div class="col-md-9">
+
+				<!-- ko with: result -->
+				<!-- ko template: { name: "pager" } --><!-- /ko -->
+
+				<div class="searchresults">
+
+					<!-- ko if: response.docs && response.docs.length > 0 -->
+
+					<div>
+
+						<!--						<h5 class="title">Showing search results for: "<span data-bind="text: $root.query"></span>"</h5>-->
+						<p class="matches">
+							Your search produced <span data-bind="text: response.numFound"></span>
+							match<!-- ko ifnot: response.numFound == 1 -->es<!-- /ko -->.
+							<!-- ko if: response.numFound == 1 -->
+							<!--<span>The only result is displayed.</span>-->
+							<!-- /ko -->
+							<!-- ko if: response.numFound != 1 && response.numFound >= $root.rows() -->
+							<span>Results <span data-bind="text: response.start + 1"></span> to <span data-bind="text: response.start + response.docs.length"></span> are displayed.</span>
+							<!-- /ko -->
+						</p>
+
+						<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+
+					</div>
+
+					<div class="row" data-bind="foreach: response.docs">
+						<div class="result col-md-4">
+							<h4 class="title">
+								<!-- ko if: $root.ordinal -->
+								<a data-bind="attr: { href: $data.url }, text: ($parent.response.start + $index() + 1) + '. ' + ($data.title || '[No title]')"></a>
+								<!-- /ko -->
+								<!-- ko ifnot: $root.ordinal -->
+								<a data-bind="attr: { href: $data.url }, text: ($data.title || '[No title]')"></a>
+								<!-- /ko -->
+								<!-- ko if: $root.size -->
+								(<span class="size" data-bind="text: $root.formatSize($data.contentLength)"></span>)
+								<!-- /ko -->
+							</h4>
+							<!-- ko if: $root.date -->
+							<h5>Last updated: <span data-bind="text: $root.formatDate($data.date)"></span></h5>
+							<!-- /ko -->
+							<div class="row">
+								<div class="col-md-5">
+									<img data-bind="attr: {src: $root.getThumbnail($data), alt: $data.title}" />
+								</div>
+								<div class="col-md-7">
+									<!-- ko if: $data.custom_s_product_availability -->
+									<span data-bind="css: 'stock ' + ($data.custom_s_product_availability == 'In Stock' ? 'in' : 'out'), text: $data.custom_s_product_availability"></span>
+									<!-- /ko -->
+									<!-- ko if: $data.custom_f_product_price -->
+									<span class="price" data-bind="text: '&pound;' + parseFloat($data.custom_f_product_price).toFixed(2) + ' per kg'"></span>
+									<!-- /ko -->
+								</div>
+							</div>
+							<p class="excerpt">
+								<!-- ko if: $data.content_en_hl -->
+								<span data-bind="html: $data.content_en_hl"></span>
+								<!-- /ko -->
+								<!-- ko ifnot: $data.content_en_hl -->
+								<span data-bind="text: $root.precis($data)"></span>
+								<!-- /ko -->
+							</p>
+							<!-- ko if: $root.url -->
+							<!-- ko if: $data.url_hl -->
+							<a data-bind="attr: { href: $data.url }, html: $root.removeSeparator($data.url_hl)" class="read-more"></a>
+							<!-- /ko -->
+							<!-- ko ifnot: $data.url_hl -->
+							<a data-bind="attr: { href: $data.url }, text: $data.url" class="read-more"></a>
+							<!-- /ko -->
+							<!-- /ko -->
+							<!-- ko ifnot: $root.url -->
+							<!-- NB: use $data.proxy_url if using resultProxy() -->
+							<a data-bind="attr: { href: $data.url }" class="read-more">Show me the cheese &gt;</a>
+							<!-- /ko -->
+						</div>
+					</div>
+
+					<!-- /ko -->
+					<!-- ko if: !response.docs || response.docs.length <= 0 -->
+<!--					<p>Sorry, no results found for <b data-bind="text: $root.query"></b>.</p>-->
+					<p>Sorry, no results found.</p>
+					<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+					<!-- /ko -->
+				</div>
+
+				<!-- ko template: { name: "pager" } --><!-- /ko -->
+				<!-- /ko -->
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/html" id="pager">
+		<!-- ko if: $root.pager -->
+		<!-- Pager template. It is used at the top and bottom of the results -->
+		<ul class="pagination" data-bind="if: pager.myPages && pager.myPages.length > 1">
+			<li class="page">
+				<a class="glyphicons chevron-left" data-bind="click: $root.changePage.bind($data, '<')">&lt;</a>
+			</li>
+			<!-- ko foreach: pager.myPages -->
+			<!-- ko ifnot: $parent.pager.page == $data -->
+			<li class="page"><a data-bind="attr: { href: $data }, text: $data, click: $root.changePage"></a></li>
+			<!-- /ko -->
+			<!-- ko if: $parent.pager.page == $data -->
+			<li class="page current"><a data-bind="text: $data"></a></li>
+			<!-- /ko -->
+			<!-- /ko -->
+			<li class="page last">
+				<a class="glyphicons chevron-right" data-bind="click: $root.changePage.bind($data, '>') ">&gt;</a>
+			</li>
+		</ul>
+		<!-- /ko -->
+
+	</script>
+
+	<script type="text/html" id="didyoumean">
+		<!-- Did You Mean template. Used in the standard results, and also when no results are found -->
+		<!-- We only want the "Did you mean" on page 1 -->
+		<div data-bind="if: typeof didYouMean !== 'undefined' && (!pager || !pager.page || pager.page == 1)" class="didyoumean_wrapper">
+			<p>Did you mean: </p>
+			<ul data-bind="foreach: didYouMean" class="didyoumean">
+				<li>
+					<a href="#" data-bind="html: $data.display, click: $root.suggestion"></a>
+				</li>
+			</ul>
+		</div>
+
+	</script>
+
+	<script>
+		// Set some properties on the CrownPeakSearch object
+		var cps = new CrownPeakSearch("crownpeak-test-data");
+		cps.facets();
+		cps.maxFacets(6);
+		cps.highlight(true);
+		//cps.resultProxy("http://server-name-here/proxy?search=%%query%%&result=%%index%%&url=");
+		//cps.sort(["url desc"]);
+		cps.rows(9);
+		cps.spellcheck(true);
+		//cps.parameters("&hl=true&hl.fl=*");
+
+		/// <summary>
+		/// The ViewModel object manages communication between our ui and the search
+		/// </summary>
+		function ViewModel() {
+			var self = this;
+			self.query = ko.observable("");
+			self.page = ko.observable(1);
+			self.result = ko.observable(false);
+			self.filterResult = ko.observable(false);
+			self.suggestions = ko.observableArray([]);
+			self.fixedFilterQueries = ko.observableArray(["custom_ss_content_type:Product"]);
+			self.filterQueries = ko.observableArray([]);
+			self.rows = ko.computed(function () { return cps.rows(); });
+
+			self.toggleFilter = function (filter, event) {
+				var value = filter[0];
+				var e = event.originalEvent.srcElement;
+				var field = e.getAttribute("field");
+				if (!field) field = e.parentElement.getAttribute("field");
+				var filterValue = field + ":\"" + value + "\"";
+				var li = $(e).closest("li");
+				if (li.hasClass("selected")) {
+					// Remove the first filter that matches this one
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i] == filterValue) {
+							self.filterQueries().splice(i, 1);
+							self.search();
+							break;
+						}
+					}
+					li.removeClass("selected");
+				} else {
+					// Remove any existing filter for this field
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i].substr(0, field.length + 1) == field + ":") {
+							self.filterQueries().splice(i, 1);
+							break;
+						}
+					}
+					li.closest("ul").find("li.selected").removeClass("selected");
+					// Push a new filter onto the end of our collection
+					self.filterQueries.push(filterValue);
+					self.search();
+					li.addClass("selected");
+				}
+			},
+			self.toggleFilterRange = function (filter, event) {
+				var e = event.originalEvent.srcElement;
+				var field = e.getAttribute("field");
+				var range = e.getAttribute("range");
+				if (!field) field = e.parentElement.getAttribute("field");
+				if (!range) range = e.parentElement.getAttribute("range");
+				var filterValue = field + ":" + range;
+				var li = $(e).closest("li");
+				if (li.hasClass("selected")) {
+					// Remove the first filter that matches this one
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i] == filterValue) {
+							self.filterQueries().splice(i, 1);
+							self.search();
+							break;
+						}
+					}
+					li.removeClass("selected");
+				} else {
+					// Remove any existing filter for this field
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i].substr(0, field.length + 1) == field + ":") {
+							self.filterQueries().splice(i, 1);
+							break;
+						}
+					}
+					li.closest("ul").find("li.selected").removeClass("selected");
+					// Push a new filter onto the end of our collection
+					self.filterQueries.push(filterValue);
+					self.search();
+					li.addClass("selected");
+				}
+			},
+				self.addFilter = function (filter, event) {
+					// Push a new filter onto the end of our collection
+					var value = filter[0];
+					// TODO: this feels dirty - is there a better way?
+					var e = event.originalEvent.srcElement;
+					var field = e.getAttribute("field");
+					if (!field) field = e.parentElement.getAttribute("field");
+					self.filterQueries.push(field + ":\"" + value + "\"");
+					self.search();
+				},
+				self.removeFilter = function (filter, event) {
+					// Remove the first filter that matches this one
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i] == filter) {
+							self.filterQueries().splice(i, 1);
+							self.search();
+							break;
+						}
+					}
+				},
+				self.clearFilters = function () {
+					self.filterQueries([]);
+					self.search();
+				},
+				self.search = function () {
+
+					// Run the query, and queue up our function to run when the results are ready
+					cps.facets([]);
+					cps.query(self.query(), self.page(), self.fixedFilterQueries().concat(self.filterQueries()))
+						.done(function (data) {
+							self.updatePager(data);
+							self.result(data);
+						});
+				},
+				self.changePage = function (n) {
+					// Go to the page with the number that they clicked on
+					// Turn text into the relevant page number before we go
+					if (n === "<<") n = 1;
+					else if (n === "<") n = Math.max(1, self.page() - 1);
+					else if (n === ">") n = Math.min(self.page() + 1, self.result().pager.total);
+					else if (n === ">>") n = self.result().pager.total;
+					self.page(n);
+					self.search();
+				},
+				self.updatePager = function (data) {
+					var pagesToShow = 5;
+
+					var pager = (data || self.result()).pager;
+					var currentPage = self.page();
+					var start = Math.max(
+							0,
+							Math.min(
+									pager.pages.length - pagesToShow,
+									currentPage - Math.floor(pagesToShow / 2) - 1
+							)
+					);
+					var end = Math.min(pager.pages.length, start + pagesToShow);
+					pager.myPages = [];
+					for (var i = start; i < end; i++) {
+						pager.myPages.push(pager.pages[i]);
+					}
+				},
+				self.reset = function () {
+					// ... then reset query and page parameters, and ditch the results
+					self.query("");
+					self.page(1);
+					self.filterQueries([]);
+					self.result(false);
+				},
+				self.searchKeyUp = function () {
+					// If the user presses return on the search box, run the search
+					if (event.keyCode === 13) {
+						self.page(1);
+						self.search();
+					}
+				},
+				self.suggestion = function (suggestion) {
+					// If the user clicks on a "did you mean" link, they'll come here
+					self.query(suggestion.query);
+					self.page(1);
+					self.filterQueries([]);
+					self.search();
+				},
+				self.precis = function (result, len) {
+					return this.trimLength(result.metadata_description || result.content || "[No content]", len);
+				},
+				self.trimLength = function (str, len) {
+					len |= 150;
+					if (str && str.length && str.length > len) {
+						return str.substr(0, str.lastIndexOf(" ", len)) + (str.length >= len ? " ..." : "");
+					}
+					return str;
+				},
+				self.formatSize = function (num) {
+					if (num == 0) return "0";
+					var UNITS = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "XB", "SB", "DB"];
+					var i = parseInt(Math.floor(Math.log(Math.abs(num)) / Math.log(1024)));
+					return Math.round(num / Math.pow(1024, i), 2) + ' ' + UNITS[i];
+				},
+				self.formatDate = function (date) {
+					date = new Date(date);
+					var result = [];
+					result.push(date.getDate());
+					result.push(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()]);
+					result.push(date.getFullYear());
+					return result.join(" ");
+				},
+				self.getIcon = function (type) {
+					if (type) {
+						var t = type.substr(0, 3).toLowerCase();
+						var i = ICONS.indexOf("," + t);
+						if (i >= 0) {
+							return ICON_FOLDER + ICONS.substr(i + 1, ICONS.indexOf(",", i + 1) - i - 1) + ".png";
+						}
+					}
+					return UNKNOWN_ICON;
+				},
+				self.removeSeparator = function (str) {
+					return (str || "").replace(new RegExp(cps.highlightSeparator().replace(/\./g, "\\."), "g"), "");
+				},
+				self.getFilterName = function (filter) {
+					switch (filter) {
+						case "custom_ss_product_category":
+							return "Nationality";
+						case "custom_ss_product_vendor":
+							return "Vendor";
+						case "custom_s_product_availability":
+							return "In Stock?";
+						case "custom_f_product_price":
+							return "Price";
+						default:
+							return "Unknown";
+					}
+				},
+				self.getFilterFieldName = function (filter, field, data) {
+					switch (filter) {
+						case "custom_ss_product_vendor":
+							// TODO: we need to return these upfront with a search
+							switch (field) {
+								case "22761":
+									return "CrownPeak US";
+								case "22762":
+									return "CrownPeak UK";
+								default:
+									return "Unknown";
+							}
+						case "custom_f_product_price":
+							switch (field) {
+								case "before":
+									return "&pound;" + (parseFloat(data) - 0.01).toFixed(2) + " or less";
+								case "after":
+									return "&pound;" + parseFloat(data).toFixed(2) + " or more";
+								default:
+									var value = parseFloat(field);
+									return "&pound;" + value.toFixed(2) + " - &pound;" + value.toFixed(0) + ".99";
+							}
+					}
+					return field;
+				},
+				self.getFilterFieldRange = function (filter, field, data) {
+					switch (filter) {
+						case "custom_f_product_price":
+							switch (field) {
+								case "before":
+									return "[*%20TO%20" + data + "]";
+								case "after":
+									return "[" + data + "%20TO%20*]";
+								default:
+									var value = parseFloat(field);
+									return "[" + value + "%20TO%20" + (value + 1) + "]";
+							}
+					}
+					return field;
+				},
+			self.getThumbnail = function (data) {
+				return "./assets/" + data.custom_i_cms_asset_id + ".jpg";
+			}
+		}
+
+		/// <summary>
+		/// Custom binding context to convert data in the form [name,value,name2,value2,...]
+		/// into the form [[name,value],[name2,value2],...]
+		/// </summary>
+		ko.bindingHandlers.foreachpair = {
+			init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				var data = [];
+				// Convert to pairs
+				for (var i = 0, len = bindingContext.$data.length; i < len; i += 2) {
+					data.push([bindingContext.$data[i], bindingContext.$data[i + 1]]);
+				}
+				bindingContext.$data = data;
+				return ko.bindingHandlers.foreach.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+			},
+			update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				return ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+			}
+		};
+		ko.virtualElements.allowedBindings.foreachpair = true;
+
+		// Initialise knockout
+		var vm = new ViewModel();
+		ko.applyBindings(vm);
+
+		vm.search();
+
+		// Fetch the facet counts with another CrownPeakSearch object
+		var cps2 = new CrownPeakSearch(cps.collection());
+
+		cps2.rows(0);
+		cps2.spellcheck(false);
+		cps2.highlight(false);
+		cps2.facets(["custom_ss_product_category", "custom_ss_product_vendor", "custom_s_product_availability"]);
+		cps2.maxFacets(99);
+		cps2.parameters("facet.range=custom_f_product_price&f.custom_f_product_price.facet.range.start=2&f.custom_f_product_price.facet.range.end=5&f.custom_f_product_price.facet.range.gap=1&f.custom_f_product_price.facet.range.other=all");
+		cps2.query("*:*", 1, vm.fixedFilterQueries())
+			.done(function (data) {
+				vm.filterResult(data);
+			});
+
+	</script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

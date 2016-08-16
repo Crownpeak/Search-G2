@@ -1,0 +1,1142 @@
+<!--
+THIS SOFTWARE IS PROVIDED "AS-IS," WITHOUT ANY EXPRESS OR IMPLIED WARRANTY.
+
+//IN NO EVENT SHALL CROWNPEAK TECHNOLOGY BE HELD LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF THE SOFTWARE.
+
+THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY WARRANTY; WITHOUT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. THERE IS NO WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS (INCLUDING BOTH CROWN PEAK TECHNOLOGY AND THE VARIOUS THIRD PARTY COPYRIGHT HOLDERS PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU, THE USER. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>CrownPeak Search G2 Test</title>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js"></script>
+	<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
+	<link rel="icon" type="image/x-icon" href="https://www.crownpeak.com/images/favicon.ico" />
+	<style type="text/css">
+.headerlogo h1 {
+	margin: 0;
+	padding: 0;
+}
+
+.headerlogo .logo {
+	background: transparent url(//desktop.crownpeak.com/images/logo-regular-261x47_a.png) no-repeat left;
+	background-position: 0;
+	width: 261px;
+	height: 85px;
+}
+
+.logo {
+	position: absolute;
+	left: -1px;
+	top: 0;
+	z-index: 5;
+	width: 315px;
+	height: 85px;
+	text-indent: -9999px;
+}
+
+ul.nav {
+	list-style: none;
+	margin: 2em 0 0 0;
+	float: right;
+}
+
+	ul.nav > li.nav-element {
+		display: inline;
+		margin: 0 1em;
+		font-size: 90%;
+	}
+
+#header {
+	height: 40px;
+}
+
+#fieldwrapper {
+	position: relative;
+}
+
+.footer-bottom {
+	background: #2b2b2b url(//desktop.crownpeak.com/images/footer-bot.jpg) repeat-x;
+}
+
+.container {
+	width: 1024px;
+	margin: 0 auto;
+}
+
+.footer-bottom {
+	height: 55px;
+}
+.footer-bottom ul {
+	list-style: none;
+	margin: 0;
+	padding: 8px 0 0 0;
+}
+.footer-bottom ul > li.social {
+	margin-top: 4px;
+}
+.footer-bottom ul > li {
+	margin: 0 8px ;padding: 0;
+	display: inline;
+}
+.footer-bottom a:link {
+	color: #7C7C7C;
+}
+.footer-bottom a:hover, .footer-bottom strong {
+	color: #FFF;
+}
+
+.row-fluid {
+	width: 100%;
+	*zoom: 1;
+}
+.row-fluid:before,
+.row-fluid:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+.row-fluid:after {
+	clear: both;
+}
+.row-fluid [class*="span"] {
+	display: block;
+	width: 100%;
+	min-height: 30px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: left;
+	margin-left: 2.127659574468085%;
+	*margin-left: 2.074468085106383%;
+}
+.row-fluid [class*="span"]:first-child {
+	margin-left: 0;
+}
+.row-fluid .span8 {
+	width: 65.95744680851064%;
+}
+.row-fluid .span6 {
+	width: 46.9%;
+	/*width: 48.93617021276595%;
+	*width: 48.88297872340425%;*/
+}
+.row-fluid .span4 {
+	width: 31.914893617021278%;
+}
+[class*="span"].pull-right,
+.row-fluid [class*="span"].pull-right {
+	float: right;
+}
+div.filters {
+	display: inline-block;
+}
+
+.filter {
+	background-color: #e0ecf1;
+	padding: 2px 4px;
+	border-radius: 10px;
+	margin-right: 4px;
+}
+
+	.filter:hover {
+		background: #C6E2EE;
+	}
+
+	.filter a {
+		visibility: hidden;
+		background-color: white;
+		border-radius: 10px;
+		display: inline-block;
+		padding: 0 4px;
+		cursor: pointer;
+	}
+
+	.filter:hover a {
+		visibility: visible;
+	}
+
+.facets-wrapper br {
+	font-size: 1px;
+	height: 1px;
+}
+
+.facets {
+	display: inline-block;
+}
+
+ul.facets {
+	margin: 0;
+	padding-left: 0;
+}
+
+p.facets {
+	margin: 0;
+}
+
+.facets li {
+	display: inline;
+	border-left: 1px solid #888;
+	padding-left: 4px;
+}
+
+	.facets li:first-child {
+		border-left-width: 0;
+		padding-left: 0;
+	}
+
+.facets a {
+	cursor: pointer;
+}
+
+.result {
+	padding: 1em 0;
+	border-bottom: 1px solid #DDD;
+}
+
+h4.title {
+	font-size: 120%;
+	margin: 4px 0 0 0;
+}
+
+h4 > .size {
+	font-weight: normal;
+	font-size: smaller;
+}
+
+.pagination .page {
+	line-height: 1.42857;
+	text-decoration: none;
+	color: #666;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	border-right-width: 0;
+}
+.pagination .page.last {
+	border-right-width: 1px;
+}
+.pagination .page a {
+	padding: 6px 12px;
+	display: block;
+	color: #000;
+	cursor: pointer;
+}
+.pagination .page a:link, .pagination .page.current a:hover {
+	color: #000;
+	text-decoration: none;
+}
+.pagination .page:hover {
+	background-color: #CCC;
+}
+
+ul.pagination {
+	list-style: none;
+	float: right;
+	clear: both;
+	margin: 20px 0;
+}
+
+	ul.pagination li:first-child:before {
+		content: "Page: ";
+	}
+
+	ul.pagination li {
+		display: inline-block;
+		float: left;
+	}
+
+.pagination>.page.current>a, .pagination>.page.current>span, .pagination>.page.current>a:hover, .pagination>.page.current>span:hover, .pagination>.page.current>a:focus, .pagination>.page.current>span:focus
+{
+	background-color: #07c;
+	border-color: #07c;
+	color: #fff;
+	cursor: default;
+}
+.stars-bg {
+	margin-top: 4px;
+	margin-right: 8px;
+	background-color: #DDD;
+	width: 80px;
+	height: 16px;
+	float: left;
+	clear: left;
+}
+
+.stars-bar {
+	background-color: red;
+	height: 16px;
+}
+
+.stars {
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAQCAYAAACBSfjBAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDQTY3NTcyOURGNDExMUUzQTgyMjlEQ0IwOThBMzQ3MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDQTY3NTcyQURGNDExMUUzQTgyMjlEQ0IwOThBMzQ3MyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkNBNjc1NzI3REY0MTExRTNBODIyOURDQjA5OEEzNDczIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkNBNjc1NzI4REY0MTExRTNBODIyOURDQjA5OEEzNDczIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wSWZsAAAAcxJREFUeNrsmL9Lw0AUx5MUXUUHKUUHi2MHBQdxExRnOynopFM3cXNSUP8ERRedFXFxcXJTcdFVhGpRXPyFbpVK/B68wnFc7i55eFn8wock9/LNt1xz70rDGAqSdUrHqSCbNum4ktHPzf9zf2iYwB8wDET9BhRShn+DLjr/BJ0p/dx8P/44WbtibomdOL3mJf9cBj8334s/aQK/QFF6QJHGXPUMIskf0ZiruPne/LoJbICaZG5To5pNF6Ci8VeoZhM336tf9MAjrORzWufX4N3SG3qoNwyBMXAJzkAdfFDPMCkE3aAMxsEoMz/I0y8m8AQnVWr6aSQ2hWNwBdYy7nKrYISZH+fqpzfxABQ0r20S4t5D6U1eSuFtsyz5ufm5+eUeuEdL2mYW9+xresdCig+wqPFz83Pxq5vIusMDNgwNeMLBP2nwc/O9+yNlXfc7rP0+Q63s4B8w1Lj53v3qBNYdHvBgqN06+O8MNW6+d786gffKdS9hukfWk3IdaTIeDX5uvnd/lDC7g2ALNIhtGrN9S6907AAz4I2YpTGhF4dvN2u+f7/SRKu0pbc0DbZFtWlDEy7RT5qmptakWsng5+Z794eWv7P+ZdGvAAMAIXU/N9hw4xUAAAAASUVORK5CYII=');
+	width: 80px;
+	height: 16px;
+}
+
+h4.title > a:link, h4.title > a:hover {
+	color: #666;
+}
+ul.pagination li:first-child:before { content: none; }
+fieldset {
+	border: none;
+	margin: 0.5em 0;
+}
+fieldset:first-child {
+	margin-top: 0;
+}
+fieldset:last-child {
+	margin-bottom: 0;
+}
+a {
+	color: #0088cc;
+	text-decoration: none;
+}
+a:hover, a:focus {
+	color: #005580;
+}
+#cpwrapper {
+	width: 1024px;
+	position: absolute;
+	top: 125px;
+	margin: 0 auto;
+	z-index: 1;
+}
+#controlpanel {
+	display: none;
+	padding: 8px;
+	background-color: #F1F1F1;
+	color: #000;
+	width: 888px;
+	border-radius: 0 0 6px 6px;
+	border: 1px solid #CCC;
+}
+#controlpanel-toggle {
+	cursor: pointer;
+	position: absolute;
+	top: 6px;
+	left: 810px;
+	color: #AAA;
+}
+#controlpanel-toggle .close {
+	display: none;
+	color: #000;
+}
+#controlpanel-toggle.open .open {
+	display: none;
+}
+#controlpanel-toggle.open .close {
+	display: inline;
+}
+.stars-bg {
+	margin-top: 4px;
+	margin-right: 8px;
+	background-color: #DDD;
+	width: 80px;
+	height: 16px;
+	float: left;
+	clear: left;
+}
+
+.stars-bar {
+	background-color: red;
+	height: 16px;
+}
+
+.stars {
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAQCAYAAACBSfjBAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDQTY3NTcyOURGNDExMUUzQTgyMjlEQ0IwOThBMzQ3MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDQTY3NTcyQURGNDExMUUzQTgyMjlEQ0IwOThBMzQ3MyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkNBNjc1NzI3REY0MTExRTNBODIyOURDQjA5OEEzNDczIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkNBNjc1NzI4REY0MTExRTNBODIyOURDQjA5OEEzNDczIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wSWZsAAAAcxJREFUeNrsmL9Lw0AUx5MUXUUHKUUHi2MHBQdxExRnOynopFM3cXNSUP8ERRedFXFxcXJTcdFVhGpRXPyFbpVK/B68wnFc7i55eFn8wock9/LNt1xz70rDGAqSdUrHqSCbNum4ktHPzf9zf2iYwB8wDET9BhRShn+DLjr/BJ0p/dx8P/44WbtibomdOL3mJf9cBj8334s/aQK/QFF6QJHGXPUMIskf0ZiruPne/LoJbICaZG5To5pNF6Ci8VeoZhM336tf9MAjrORzWufX4N3SG3qoNwyBMXAJzkAdfFDPMCkE3aAMxsEoMz/I0y8m8AQnVWr6aSQ2hWNwBdYy7nKrYISZH+fqpzfxABQ0r20S4t5D6U1eSuFtsyz5ufm5+eUeuEdL2mYW9+xresdCig+wqPFz83Pxq5vIusMDNgwNeMLBP2nwc/O9+yNlXfc7rP0+Q63s4B8w1Lj53v3qBNYdHvBgqN06+O8MNW6+d786gffKdS9hukfWk3IdaTIeDX5uvnd/lDC7g2ALNIhtGrN9S6907AAz4I2YpTGhF4dvN2u+f7/SRKu0pbc0DbZFtWlDEy7RT5qmptakWsng5+Z794eWv7P+ZdGvAAMAIXU/N9hw4xUAAAAASUVORK5CYII=');
+	width: 80px;
+	height: 16px;
+}
+
+.icon {
+	float: left;
+	margin-top: 4px;
+	margin-right: 8px;
+}
+#searchcontainer {
+	width: 1024px;
+	margin: 0 auto;
+	padding: 0 12px 12px 12px;
+	background: #FFF;
+	position: relative;
+}
+body {
+	font-family: Roboto, sans-serif;
+	font-size: 90%;
+	color: #666;
+	margin: 0 auto;
+	padding: 0;
+	overflow-y: scroll;
+}
+p.excerpt {
+	line-height: 1.5em;
+}
+h5.title {
+	font-weight: bold;
+	font-size: 140%;
+	margin: 0.75em 0;
+}
+
+span.filter{
+	display:inline;
+	background-color: #1f9ddc;
+	height:100%;
+	color: #FFF;
+	border-radius: 4px;
+	padding: 2px;
+	padding-left:5px;
+	margin-right:5px;
+}
+span.filter a:link {
+	color: #FFF;
+}
+span.filter:hover {
+	background:#22adf3;
+}
+span.filter.clear a {
+	visibility: visible;
+	background-color: transparent;
+	border: none;
+}
+input[type=text], input[type=search] {
+	background: #F1F1F1;
+	border: 1px solid #CCC;
+	border-radius: 6px;
+	padding: 3px 5px 3px 5px;
+}
+input[type=search] {
+	font-size: 100%;
+	width: 905px;
+	padding: 0.5em;
+}
+input.button {
+	font-size: 110%;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	background-color: #1f9ddc;
+	color: #FFF;
+	border: none;
+	border-radius: 4px;
+	margin-left: 10px;
+	padding: 0.5em 1.5em;
+}
+input.button:hover, input.button:focus {
+	background-color: #22adf3;
+}
+.searchresults {
+	font-size: 90%;
+}
+.map, #map-canvas {
+	height: 400px;
+}
+</style>
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+</head>
+<body id="masterBody">
+	
+	<div id="searchcontainer">
+		
+		<header id="header">
+			<!--LOGO-->
+			<div class="headerlogo">
+				<!-- LOGO IS H1 tag on homepage, REMOVE H1 ON OTHER PAGES -->
+				<h1><a href="https://www.crownpeak.com/" class="logo">CrownPeak</a></h1>
+				<!-- /0/ -->
+			</div>
+			<!--LOGO ENDS-->
+			<!--NAV-->
+			<div class="navbar navbar-inverse navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="nav-element">
+								<a href="index.aspx">Text Search</a>
+							</li>
+							<li class="nav-element">
+								<a href="geo.aspx">Geospatial Search</a>
+							</li>
+							<li class="nav-element">
+								<a href="cheese.aspx">Product Search</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--NAV Ends-->
+		</header>
+
+		<div id="cpwrapper">
+			<div id="controlpanel">
+				<div>
+					<fieldset>
+						<legend>Query options</legend>
+<!--						<label><input type="checkbox" data-bind="checked: spellcheck, event: {click: updateSpellcheck}" />Spellcheck</label>&nbsp;&nbsp;-->
+						<label><input type="checkbox" data-bind="checked: autocomplete, event: {click: updateAutocomplete}" />Autocomplete</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label>Sort: <input type="text" id="sort" data-bind="value: sort, event: {change: updateSort}" /></label>&nbsp;&nbsp;
+						<label><input type="checkbox" data-bind="checked: pager" />Show pager</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label>Page size: <input type="text" id="rows" size="1" maxlength="2" data-bind="value: rows, event: {change: updateRows}" /></label>
+						<label>Pages to show: <input type="text" id="showpages" size="1" maxlength="2" data-bind="value: showPages, event: {change: updateShowPages}" /></label>
+					</fieldset>
+					<!--<fieldset>
+						<legend>Facets</legend>
+						<label><input type="checkbox" id="facet" data-bind="checked: facet, event: {click: updateFacet}" />Show facets</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label>Fields: <input type="text" id="facets" data-bind="value: facets, attr: {disabled: !facet()}, event: {change: updateFacets}" /></label>
+						<label>Maximum number: <input type="text" id="maxfacets" size="1" maxlength="2" data-bind="value: maxFacets, attr: {disabled: !facet()}, event: {change: updateMaxFacets}" /></label>
+					</fieldset>-->
+					<fieldset>
+						<legend>Result options</legend>
+<!--						<label><input type="checkbox" data-bind="checked: highlight, event: {click: updateHighlight}" />Highlights</label>&nbsp;&nbsp;&nbsp;-->
+<!--						<label><input type="checkbox" data-bind="checked: rating" />Rating</label>&nbsp;&nbsp;&nbsp;-->
+						<label><input type="checkbox" data-bind="checked: ordinal" />Ordinal</label>&nbsp;&nbsp;&nbsp;
+<!--						<label><input type="checkbox" data-bind="checked: icon" />Icons</label>&nbsp;&nbsp;&nbsp;-->
+						<label><input type="checkbox" data-bind="checked: size" />Size</label>&nbsp;&nbsp;&nbsp;
+<!--						<label><input type="checkbox" data-bind="checked: date" />Date</label>&nbsp;&nbsp;&nbsp;-->
+						<label><input type="checkbox" data-bind="checked: url" />Url</label>
+						<label><input type="checkbox" data-bind="checked: distance" />Distance</label>
+						<label><input type="checkbox" data-bind="checked: directions" />Directions</label>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+
+		<br/><br/><br/>
+		
+		<div id="fieldwrapper">
+			<input type="search" id="searchInput" placeholder="What are you looking for?" autofocus data-bind="value: query, event: { keyup: searchKeyUp }">
+			<div id="controlpanel-toggle">
+				<span class="open">Advanced</span>
+				<span class="close">Advanced</span>
+			</div>
+			<input type="button" class="button" value="Search" data-bind="click: search">
+		</div>
+
+		<!-- ko with: result -->
+		<!-- ko template: { name: "pager" } --><!-- /ko -->
+
+		<div class="searchresults">
+
+			<div data-bind="visible: response.numFound < 0 || $root.show() == 'directions'">&nbsp;</div>
+
+			<!-- ko if: response.numFound >= 0 && (!response.docs || response.docs.length <= 0) -->
+			<p>Sorry, no results found.</p>
+			<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+			<!-- /ko -->
+
+			<div data-bind="visible: response.numFound > 0 && $root.show() == 'results'">
+				<p class="matches">
+					Your search produced <span data-bind="text: response.numFound"></span>
+					match<!-- ko ifnot: response.numFound == 1 -->es<!-- /ko -->.
+					<!-- ko if: response.numFound == 1 -->
+					<span>The only result is displayed.</span>
+					<!-- /ko -->
+					<!-- ko ifnot: response.numFound == 1 -->
+					<span>Results <span data-bind="text: response.start + 1"></span> to <span data-bind="text: response.start + response.docs.length"></span> are displayed.</span>
+					<!-- /ko -->
+				</p>
+
+				<!-- ko template: { name: "didyoumean" } --><!-- /ko -->
+				<!-- ko if: typeof facet_counts !== "undefined" -->
+				<div data-bind="with: facet_counts.facet_fields" class="facets_wrapper">
+					<!-- ko foreach: Object.keys($data) -->
+					<p class="facets">
+						Facets for <span data-bind="text: $data"></span>:
+					</p>
+					<div data-bind="with: $parent[$data]" class="facets">
+						<ul data-bind="foreachpair: $data" class="facets">
+							<li><a href="#" data-bind="click: $root.addFilter, attr: { field: $parents[1] }"><span data-bind="text: $data[0]"></span> (<span data-bind="text: $data[1]"></span>)</a></li>
+						</ul>
+					</div>
+					<br />
+					<!-- /ko -->
+				</div>
+
+				<div data-bind="if: $root.filterQueries().length > 0">
+					<p>
+						Active filters:
+						<div data-bind="foreach: $root.filterQueries" class="filters">
+							<span class="filter">
+								<span data-bind="text: $data.split(':')[0]"></span>:
+								<span data-bind="text: $data.split(':')[1].replace(/^.|.$/g, '')"></span>
+								<a data-bind="click: $root.removeFilter">x</a>
+							</span>
+						</div>
+						<span class="filter clear"><a href="#" data-bind="click: $root.clearFilters">Clear all</a></span>
+					</p>
+				</div>
+				<!-- /ko -->
+			</div>
+			
+			<div class="row-fluid">
+				<div class="span6">
+					<div id="directionspanel" data-bind="visible: $root.show() == 'directions'"></div>
+					<div id="resultspanel" class="results" data-bind="foreach: response.docs, visible: $root.show() == 'results'">
+						<div class="result">
+							<!-- ko if: $root.rating -->
+							<div class="stars-bg" data-bind="attr: { title: ($data.normalizedScore * 5).toString().substr(0, 3).replace('.0', '') + ' stars out of 5' }">
+								<div class="stars-bar" data-bind="style: { width: ($data.normalizedScore * 80) + 'px' }">
+									<div class="stars"></div>
+								</div>
+							</div>
+							<!-- /ko -->
+							<!-- ko if: $root.icon -->
+							<img class="icon" alt="Icon" data-bind="attr: { src: $root.getIcon($data.type_short) }" />
+							<!-- /ko -->
+							<h4 class="title">
+								<!-- ko if: $root.ordinal -->
+								<a data-bind="attr: { href: $data.url }, text: ($parent.response.start + $index() + 1) + '. ' + ($data.title || '[No title]')"></a>
+								<!-- /ko -->
+								<!-- ko ifnot: $root.ordinal -->
+								<a data-bind="attr: { href: $data.url }, text: ($data.title || '[No title]')"></a>
+								<!-- /ko -->
+								<!-- ko if: $root.size -->
+								(<span class="size" data-bind="text: $root.formatSize($data.contentLength)"></span>)
+								<!-- /ko -->
+							</h4>
+							<!-- ko if: $root.date -->
+							<h5>Last updated: <span data-bind="text: $root.formatDate($data.date)"></span></h5>
+							<!-- /ko -->
+							<p class="address" data-bind="text: $data.custom_s_vendor_address"></p>
+							<p class="telephone" data-bind="text: 'Tel: ' + $data.custom_s_vendor_telephone"></p>
+							<!-- ko if: $root.distance -->
+							<p class="distance" data-bind="text: 'Distance: ' + parseInt($data._dist_) + ' km', visible: $data._dist_"></p>
+							<!-- /ko -->
+							<!-- ko if: $root.directions -->
+							<p data-bind="visible: $data._dist_"><a class="directions" href="#" data-bind="click: $root.getDirections">Driving directions</a></p>
+							<!-- /ko -->
+							<!-- ko if: $root.url -->
+							<!-- ko if: $data.url_hl -->
+							<a data-bind="attr: { href: $data.url }, html: $root.removeSeparator($data.url_hl)" class="read-more"></a>
+							<!-- /ko -->
+							<!-- ko ifnot: $data.url_hl -->
+							<a data-bind="attr: { href: $data.url }, text: $data.url" class="read-more"></a>
+							<!-- /ko -->
+							<!-- /ko -->
+							<!-- ko ifnot: $root.url -->
+							<!-- NB: use $data.proxy_url if using resultProxy() -->
+							<a data-bind="attr: { href: $data.url }" class="read-more">Office information</a>
+							<!-- /ko -->
+						</div>
+
+					</div>
+				</div>
+				<div class="map span6 pull-right">
+					<div id="map-canvas"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- /ko -->
+		
+	</div>
+	<br style="clear: both" />
+	
+	<div class="footer-bottom">
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span8">
+					<p>
+						Copyright © 2001 - 2014 <strong>CrownPeak</strong>. All right reserved. | <a class="flinks" href="https://www.crownpeak.com/privacy/index.aspx">Disclaimer </a>| <strong>Call Us 1.800.887.1944</strong>
+					</p>
+				</div>
+				<div class="span4">
+					<ul>
+						<li class="social">
+							<a href="https://www.twitter.com/crownpeakhelp">
+								<img src="https://desktop.crownpeak.com/images/tw.png" alt="Twitter">
+							</a>
+						</li>
+						<li class="social">
+							<a href="https://www.linkedin.com/company/89133">
+								<img src="https://desktop.crownpeak.com/images/in.png" alt="Linked In">
+							</a>
+						</li>
+						<li>
+							<a href="https://www.crownpeak.com/" class="f-logo">
+								<img src="https://desktop.crownpeak.com/images/f-logo-2014_2.png" alt="">
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/html" id="pager">
+		<!-- ko if: $root.pager -->
+		<!-- Pager template. It is used at the top and bottom of the results -->
+		<ul class="pagination" data-bind="if: pager.myPages && pager.myPages.length > 1">
+			<li class="page">
+				<a class="glyphicons chevron-left" data-bind="click: $root.changePage.bind($data, '<')">&lt;</a>
+			</li>
+			<!-- ko foreach: pager.myPages -->
+			<!-- ko ifnot: $parent.pager.page == $data -->
+			<li class="page"><a data-bind="attr: { href: $data }, text: $data, click: $root.changePage"></a></li>
+			<!-- /ko -->
+			<!-- ko if: $parent.pager.page == $data -->
+			<li class="page current"><a data-bind="text: $data"></a></li>
+			<!-- /ko -->
+			<!-- /ko -->
+			<li class="page last">
+				<a class="glyphicons chevron-right" data-bind="click: $root.changePage.bind($data, '>') ">&gt;</a>
+			</li>
+		</ul>
+		<!-- /ko -->
+
+	</script>
+
+	<script type="text/html" id="didyoumean">
+		<!-- Did You Mean template. Used in the standard results, and also when no results are found -->
+		<!-- We only want the "Did you mean" on page 1 -->
+		<div data-bind="if: typeof didYouMean !== 'undefined' && (!pager || !pager.page || pager.page == 1)" class="didyoumean_wrapper">
+			<p>Did you mean: </p>
+			<ul data-bind="foreach: didYouMean" class="didyoumean">
+				<li>
+					<a href="#" data-bind="html: $data.display, click: $root.suggestion"></a>
+				</li>
+			</ul>
+		</div>
+
+	</script>
+
+	<script>
+
+		var ICON_FOLDER = "images/icons/";
+		var ICONS = ",doc,htm,pdf,ppt,txt,xls,";
+		var UNKNOWN_ICON = "images/icons/txt.png";
+
+		// Set some properties on the CrownPeakSearch object
+		var cps = new CrownPeakSearch("crownpeak-test-data")
+		cps.facets([]);
+		cps.maxFacets(6);
+		cps.highlight(false);
+		//cps.resultProxy("http://server-name-here/proxy?search=%%query%%&result=%%index%%&url=");
+		//cps.sort(["url desc"]);
+		cps.rows(3);
+		cps.spellcheck(false);
+		//cps.parameters("&hl=true&hl.fl=*");
+
+		/// <summary>
+		/// The ViewModel object manages communication between our ui and the search
+		/// </summary>
+		function ViewModel() {
+			var self = this;
+			self.query = ko.observable("");
+			self.page = ko.observable(1);
+			self.result = ko.observable({ response: { numFound: -1, start: 0, docs: []}});
+			self.suggestions = ko.observableArray([]);
+			self.fixedFilterQueries = ko.observableArray(["custom_ss_content_type:Vendor"]);
+			self.filterQueries = ko.observableArray([]);
+			self.origin = null;
+			self.markers = [];
+			self.googleautocomplete = null;
+
+			self.highlight = ko.observable(cps.highlight());
+			self.updateHighlight = function () {
+				cps.highlight(this.highlight());
+				this.updateDisplay();
+				return true;
+			}
+			self.spellcheck = ko.observable(cps.spellcheck());
+			self.updateSpellcheck = function () {
+				cps.spellcheck(this.spellcheck());
+				this.updateDisplay();
+				return true;
+			}
+			self.facet = ko.observable(cps.facets() != null && cps.facets().length > 0);
+			self.updateFacet = function () {
+				cps.facets(this.facet() ? this.facets() : []);
+				this.updateDisplay();
+				return true;
+			}
+			self.maxFacets = ko.observable(cps.maxFacets());
+			self.updateMaxFacets = function () {
+				cps.maxFacets(this.maxFacets());
+				this.updateDisplay();
+				return true;
+			}
+			self.facets = ko.observable(cps.facets().join(","));
+			self.updateFacets = function () {
+				cps.facets(this.facets().split(","));
+				this.updateDisplay();
+				return true;
+			}
+			self.sort = ko.observable(cps.sort().join(",") || "score desc");
+			self.updateSort = function () {
+				cps.sort(this.sort().split(","));
+				this.updateDisplay();
+				return true;
+			}
+			self.updateDisplay = function () {
+				if (this.result()) this.search();
+			}
+			self.rows = ko.observable(cps.rows());
+			self.updateRows = function () {
+				cps.rows(this.rows());
+				this.updateDisplay();
+				return true;
+			}
+			self.showPages = ko.observable(5);
+			self.updateShowPages = function() {
+				this.updatePager();
+				this.updateDisplay();
+				return true;
+			}
+			self.autocomplete = ko.observable(true);
+			self.updateAutocomplete = function () {
+				if (this.autocomplete()) {
+					autocompleteOn();
+				}
+				else {
+					autocompleteOff();
+				}
+				return true;
+			}
+			self.pager = ko.observable(true);
+			self.ordinal = ko.observable(true);
+			self.rating = ko.observable(false);
+			self.icon = ko.observable(false);
+			self.size = ko.observable(false);
+			self.date = ko.observable(false);
+			self.url = ko.observable(false);
+			self.distance = ko.observable(true);
+			self.directions = ko.observable(true);
+			self.show = ko.observable("results");
+
+			self.addFilter = function(filter, event) {
+					// Push a new filter onto the end of our collection
+					var value = filter[0];
+					// TODO: this feels dirty - is there a better way?
+					var e = event.originalEvent.srcElement;
+					var field = e.getAttribute("field");
+					if (!field) field = e.parentElement.getAttribute("field");
+					self.filterQueries.push(field + ":\"" + value + "\"");
+					self.search();
+				},
+				self.removeFilter = function(filter, event) {
+					// Remove the first filter that matches this one
+					var facets = self.filterQueries();
+					for (var i = 0, len = facets.length; i < len; i++) {
+						if (facets[i] == filter) {
+							self.filterQueries().splice(i, 1);
+							self.search();
+							break;
+						}
+					}
+				},
+				self.clearFilters = function() {
+					self.filterQueries([]);
+					self.search();
+				},
+				self.search = function () {
+					// Switch back to results mode
+					self.show("results");
+					var query = self.query();
+
+					if (vm.origin) {
+						cps.geo({
+							"location": { "lat": vm.origin.lat, "lon": vm.origin.lng },
+							"field": "custom_p_location", // could be omitted - this is the default
+							"outputfield": "_dist_"				// ditto
+						});
+						query = "*:*";
+					} else {
+						cps.geo(null);
+					}
+
+					cps.parameters("&qf=title%20url%20custom_t_vendor_address");
+
+					// Run the query, and queue up our function to run when the results are ready
+					cps.query(query, self.page(), self.fixedFilterQueries().concat(self.filterQueries()))
+						.done(function (data) {
+							self.updatePager(data);
+							self.result(data);
+							initializeMaps(data);
+						});
+				},
+				self.changePage = function(n) {
+					// Go to the page with the number that they clicked on
+					// Turn text into the relevant page number before we go
+					if (n === "<<") n = 1;
+					else if (n === "<") n = Math.max(1, self.page() - 1);
+					else if (n === ">") n = Math.min(self.page() + 1, self.result().pager.total);
+					else if (n === ">>") n = self.result().pager.total;
+					self.page(n);
+					self.search();
+				},
+				self.updatePager = function (data) {
+					var pagesToShow = self.showPages();
+
+					var pager = (data || self.result()).pager;
+					var currentPage = self.page();
+					var start = Math.max(
+							0,
+							Math.min(
+									pager.pages.length - pagesToShow,
+									currentPage - Math.floor(pagesToShow / 2) - 1
+							)
+					);
+					var end = Math.min(pager.pages.length, start + pagesToShow);
+					pager.myPages = [];
+					for (var i = start; i < end; i++) {
+						pager.myPages.push(pager.pages[i]);
+					}
+				},
+				self.reset = function () {
+					// ... then reset query and page parameters, and ditch the results
+					self.query("");
+					self.page(1);
+					self.filterQueries([]);
+					self.result(false);
+				},
+				self.searchKeyUp = function () {
+					// If the user presses return on the search box, run the search
+					if (event.keyCode === 13) {
+						self.page(1);
+						self.search();
+					}
+				},
+				self.suggestion = function (suggestion) {
+					// If the user clicks on a "did you mean" link, they'll come here
+					self.query(suggestion.query);
+					self.page(1);
+					self.filterQueries([]);
+					self.search();
+				},
+				self.precis = function (result, len) {
+					return this.trimLength(result.metadata_description || result.content || "[No content]", len);
+				},
+				self.trimLength = function (str, len) {
+					len |= 230;
+					if (str && str.length && str.length > len) {
+						return str.substr(0, str.lastIndexOf(" ", len)) + (str.length >= len ? " ..." : "");
+					}
+					return str;
+				},
+				self.formatSize = function (num) {
+					if (num == 0) return "0";
+					var UNITS = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "XB", "SB", "DB"];
+					var i = parseInt(Math.floor(Math.log(Math.abs(num)) / Math.log(1024)));
+					return Math.round(num / Math.pow(1024, i), 2) + ' ' + UNITS[i];
+				},
+				self.formatDate = function (date) {
+					date = new Date(date);
+					var result = [];
+					result.push(date.getDate());
+					result.push(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()]);
+					result.push(date.getFullYear());
+					return result.join(" ");
+				},
+				self.getIcon = function (type) {
+					if (type) {
+						var t = type.substr(0, 3).toLowerCase();
+						var i = ICONS.indexOf("," + t);
+						if (i >= 0) {
+							return ICON_FOLDER + ICONS.substr(i + 1, ICONS.indexOf(",", i + 1) - i - 1) + ".png";
+						}
+					}
+					return UNKNOWN_ICON;
+				},
+				self.removeSeparator = function (str) {
+					return (str || "").replace(new RegExp(cps.highlightSeparator().replace(/\./g, "\\."), "g"), "");
+				},
+				self.getDirections = function () {
+					route(self.originlocation, this.location);
+				}
+		}
+
+		/// <summary>
+		/// Custom binding context to convert data in the form [name,value,name2,value2,...]
+		/// into the form [[name,value],[name2,value2],...]
+		/// </summary>
+		ko.bindingHandlers.foreachpair = {
+			init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				var data = [];
+				// Convert to pairs
+				for (var i = 0, len = bindingContext.$data.length; i < len; i += 2) {
+					data.push([bindingContext.$data[i], bindingContext.$data[i + 1]]);
+				}
+				bindingContext.$data = data;
+				return ko.bindingHandlers.foreach.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+			},
+			update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+				return ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+			}
+		};
+
+		// Initialise knockout
+		var vm = new ViewModel();
+		ko.applyBindings(vm);
+
+		function clearMarkers() {
+			for (var i = 0, len = vm.markers.length; i < len; i++) {
+				vm.markers[i].setMap(null);
+			}
+			vm.markers = [];
+		}
+
+		function addMarker(position, color, index, name, address, icon) {
+			var marker = new google.maps.Marker({
+				position: position,
+				map: vm.map,
+				icon: icon || "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color
+			});
+			if (index || index == 0) marker.index = index;
+			if (name) marker.name = name;
+			if (address) marker.address = address;
+			vm.markers.push(marker);
+			return marker;
+		}
+
+		function getBounds() {
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0, len = vm.markers.length; i < len; i++) {
+				bounds.extend(vm.markers[i].position);
+			}
+			return bounds;
+		}
+
+		function route(start, end) {
+			var request = {
+			  	origin: start,
+			  	destination: end,
+			  	travelMode: google.maps.TravelMode.DRIVING
+			  };
+			vm.directionsService.route(request, function (response, status) {
+				if (status == google.maps.DirectionsStatus.OK) {
+					clearMarkers();
+					vm.directionsDisplay.setMap(vm.map);
+					vm.directionsDisplay.setDirections(response);
+					vm.directionsDisplay.setPanel(document.getElementById("directionspanel"));
+					var leg = response.routes[0].legs[0];
+					addMarker(leg.start_location, "00FF00", null, "Start", leg.start_address, "https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-waypoint-a.png&text=A&psize=16&font=fonts/Roboto-Regular.ttf&color=ff333333&ax=44&ay=48&scale=1");
+					addMarker(leg.end_location, "FF0000", null, "Finish", leg.end_address, "https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-waypoint-b.png&text=B&psize=16&font=fonts/Roboto-Regular.ttf&color=ff333333&ax=44&ay=48&scale=1");
+					vm.show("directions");
+				} else {
+					alert("Sorry - unable to find driving directions to this location");
+				}
+			});
+		}
+
+		function autocompleteOn() {
+			vm.googleautocomplete = new google.maps.places.Autocomplete(document.getElementById('searchInput'));
+			vm.googleautocomplete.bindTo('bounds', vm.map);
+
+			google.maps.event.addListener(vm.googleautocomplete, 'place_changed', function () {
+				vm.origin = null;
+				var place = vm.googleautocomplete.getPlace();
+				if (!place || !place.geometry) {
+					return;
+				}
+				vm.origin = { "lat": place.geometry.location.lat(), "lng": place.geometry.location.lng() };
+			});
+		}
+
+		function autocompleteOff() {
+			vm.googleautocomplete.unbindAll();
+			google.maps.event.clearInstanceListeners(document.getElementById('searchInput'));
+		}
+
+		function initializeMaps(data) {
+
+			var mapOptions = {
+				center: vm.origin ? new google.maps.LatLng(vm.origin.lat, vm.origin.lon) : new google.maps.LatLng(0, 0), //-33.8688, 151.2195),
+				zoom: vm.origin ? 13 : 1
+			};
+
+			var map = vm.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+			vm.directionsService = new google.maps.DirectionsService();
+			vm.directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+
+			clearMarkers();
+			if (data && data.response && data.response.docs) {
+				// Process our results
+				for (var i = 0, len = data.response.docs.length; i < len; i++) {
+					var doc = data.response.docs[i];
+					var location = doc["custom_p_location"];
+					if (location) {
+						var lat = location.split(",")[0], lng = location.split(",")[1];
+						doc.location = new google.maps.LatLng(lat, lng);
+						var marker = addMarker(doc.location, "FE7569", i, doc["title"], doc["custom_s_vendor_address"]);
+						google.maps.event.addListener(marker, 'click', function (e, a) {
+							new google.maps.InfoWindow({
+								content: this.name
+							}).open(map, this);
+						});
+					}
+				}
+				if (vm.origin) {
+					// Add another marker for their search location
+					vm.originlocation = new google.maps.LatLng(vm.origin.lat, vm.origin.lng);
+					addMarker(vm.originlocation, "00FFFF", i, "Your location", vm.query());
+				}
+				if (vm.markers.length > 0) map.fitBounds(getBounds());
+
+				if (vm.markers.length == 1) {
+					// Set a zoom if there's only one result
+					map.setZoom(12);
+				} else if (vm.markers.length == 0) {
+					map.setZoom(1);
+				}
+			}
+
+			if (vm.autocomplete()) autocompleteOn();
+
+			google.maps.event.addListener(vm.googleautocomplete, 'place_changed', function () {
+				vm.origin = null;
+				var place = vm.googleautocomplete.getPlace();
+				if (!place || !place.geometry) {
+					return;
+				}
+				vm.origin = { "lat": place.geometry.location.lat(), "lng": place.geometry.location.lng() };
+			});
+		}
+		google.maps.event.addDomListener(window, 'load', initializeMaps);
+
+	</script>
+
+	<script>
+		var cptimer = null;
+
+		$(document).ready(function() {
+			$("#controlpanel-toggle").click(function () {
+				if (cptimer != null) {
+					window.clearTimeout(cptimer);
+					cptimer = null;
+				}
+				$(this).toggleClass("open");
+				$("#controlpanel").slideToggle(100).toggleClass("open");
+			});
+		});
+
+		function closeCP() {
+			if (cptimer != null) {
+				window.clearTimeout(cptimer);
+				cptimer = null;
+			}
+			$("#controlpanel-toggle").removeClass("open");
+			$("#controlpanel").slideUp(100).removeClass("open");
+		}
+
+		$("#cpwrapper").hover(function() {
+			if (cptimer != null) {
+				window.clearTimeout(cptimer);
+				cptimer = null;
+			}
+		}, function() {
+			if (cptimer != null) {
+				window.clearTimeout(cptimer);
+			}
+			//cptimer = window.setTimeout(closeCP, 2000);
+		});
+	</script>
+
+</body>
+
+</html>
+
+

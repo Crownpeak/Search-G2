@@ -5,15 +5,23 @@ CrownPeak Search includes a fully supported Software Development Kit, enabling y
 * Makes implementation simple.
 * Wraps-up the standard Lucene features offed by Search G2.
 * Provided in both JavaScript & .NET versions.
-* JavaScript version is avaialble via the Crownpeak CDN.
+* JavaScript version is available via the Crownpeak CDN.
 * Minified version available at production-time.
 * Versions maintained by Crownpeak.
 * Keep version numbers for backwards compatibility.
 
-We provide a few examples of the use of the Crownpeak Search G2 SDK, using different techologies:
+We provide a few examples of the use of the Crownpeak Search G2 SDK, using different techologies for simple set-up:
 
 * [KnockoutJS](./knockoutjs-search-g2-sdk-javascript-example.html)
 * [Plain Javascript](./plainjs-search-g2-sdk-javascript-example.html)
+
+We also provide a few examples of the use of the Crownpeak Search G2 SDK, for more advanced use-cases:
+
+* [Keyword Search](./advanced/knockoutjs-search-g2-sdk-javascript-keyword-example-advanced.html)
+* [Geospatial Search](./advanced/knockoutjs-search-g2-sdk-javascript-geospatial-example-advanced.html)
+* [Product Search](./advanced/knockoutjs-search-g2-sdk-javascript-products-example-advanced.html)
+
+***
 
 ## Creating A Simple Text-Based Search Page, Using Knockout JS
 
@@ -173,3 +181,13 @@ The entire source of this page is detailed below:
 	</body>
 </html>
 ```
+
+***
+
+## Disclaimer
+
+THIS SOFTWARE IS PROVIDED "AS-IS," WITHOUT ANY EXPRESS OR IMPLIED WARRANTY.
+
+IN NO EVENT SHALL CROWNPEAK TECHNOLOGY BE HELD LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF THE SOFTWARE.
+
+THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY WARRANTY; WITHOUT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. THERE IS NO WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS (INCLUDING BOTH CROWN PEAK TECHNOLOGY AND THE VARIOUS THIRD PARTY COPYRIGHT HOLDERS PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU, THE USER. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
