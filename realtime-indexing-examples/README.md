@@ -11,6 +11,72 @@ A number of use-cases where Realtime Indexing would prove advantageous:
 
 ***
 
+## Configuring Crownpeak Search G2 Realtime Indexing
+
+In order to use Search G2 Realtime Indexing, the Search G2 CMS Connector must be enabled. This connector links the CMS to each Search G2 Collection that you manage. Connectors must be configured initially by Crownpeak Support. Raise a ticket, or send an email to support@crownpeak.com.
+
+Once the Search G2 CMS Connector has been configured, you need to update your CMS Publishing Packages to select which Search G2 CMS Connector to use for deployment (see image below):
+
+![searchg2-realtimeindexing-publishingpackage-example.png](../images/examples/searchg2-realtimeindexing-publishingpackage-example.png?raw=true "searchg2-realtimeindexing-publishingpackage-example.png")
+
+Finally, configure Search G2 CMS Realtime Indexing Templates to define which data to publish to Search G2 during the publish operation.
+
+### Search G2 CMS Realtime Indexing CMS Templates
+
+There are 3 Templates that you can configure in order to use Search G2 Realtime Indexing:
+
+* search_g2_insert.aspx - This is fired first time an Asset is published;
+* search_g2_update.aspx - This is fired for subsequent updates to an existing Asset;
+* search_g2_delete.aspx - This is fired for delete request for an existing Asset.
+
+Example of a Search G2 CMS Realtime Indexing Insert / Update Template:
+
+```
+//set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document insert/update to CrownPeak Search
+var doc = new SearchG2JsonParams
+{
+    /*Id = asset.Id.ToString(), //note that this is not required if the value asset.Id.ToString() is to be used as the document identifier in CrownPeak Search*/
+    Operation = SearchG2JsonParams.OperationType.Create, //or SearchG2JsonParams.OperationType.Update
+    Overwrite = true //if a document exists with this Id, overwrite it
+};
+ 
+doc.Add("custom_s_language", "language"); //custom string field "language", takes value from asset["language"]
+doc.Add("custom_s_country", "country");
+doc.Add("custom_s_product", "product");
+doc.Add("title", "title");
+doc.Add("content", "content");
+doc.Add("type", "type");
+doc.AddFixed("contentLength", asset.Raw["content"].Length.ToString()); //standard CrownPeak Search field "contentLength", taking value from asset.Raw["content"].Length.ToString()
+doc.AddFixed("tstamp", DateTime.UtcNow.ToString("O")); //standard CrownPeak Search field "stamp", taking value from DateTime.UtcNow.ToString("O")
+doc.Add("date", AssetPropertyNames.ModifiedDate);
+doc.Add("lastModified", AssetPropertyNames.ModifiedDate);
+ 
+//add the SearchG2JsonParams document to context.JsonParams collection for insert/update to CrownPeak Search.
+context.JsonParams.Add(doc);
+```
+
+Example of a Search G2 CMS Realtime Indexing Delete Template:
+
+```
+//set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document delete from CrownPeak Search
+var doc = new SearchG2JsonParams
+{
+    /*Id = asset.Id.ToString(), //note that this is not required if the value asset.Id.ToString() is to be used as the document identifier in CrownPeak Search*/
+    Operation = SearchG2JsonParams.OperationType.Delete
+};
+ 
+//add the SearchG2JsonParams document to context.JsonParams collection for delete from CrownPeak Search.
+context.JsonParams.Add(doc);
+```
+
+### Logging Search G2 Realtime Indexing Actions
+
+A record is added to the System Log under 'Custom' in the Action filter when an asset is sent for Realtime Indexing.  This log can be viewed under Reports > Audit > System (see below):
+
+![searchg2-realtimeindexing-logging-example.png](../images/examples/searchg2-realtimeindexing-logging-example.png?raw=true "searchg2-realtimeindexing-logging-example.png")
+
+***
+
 ## Disclaimer
 
 THIS SOFTWARE IS PROVIDED "AS-IS," WITHOUT ANY EXPRESS OR IMPLIED WARRANTY.
