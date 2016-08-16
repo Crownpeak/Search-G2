@@ -18,6 +18,7 @@ CrownPeak's Search platform is a highly-scalable, high-performance, enterprise-g
 * **Standards-Based API** - We know that your teams need to work with standards-based APIs, to ensure that they can do their jobs quickly and efficiently. CrownPeak Search implements a RESTful API for querying, and returns results in JSON or XML, depending on your requirements. This makes it perfect for powering powerful applications, across any channel or device without additional development effort.
 * **Search G2 SDK** - CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
 
+***
 
 ## Wildcard Schema (Schemaless Design)
 
@@ -51,6 +52,8 @@ By default, all fields contain single values, however, the following fields can 
 * custom_dts_{{fieldname}} - Multi-valued date & time field (e.g. custom_dts_mymultivalueddatetimefieldname).
 ```
 
+***
+
 ## Private Content
 
 Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? CrownPeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
@@ -60,6 +63,7 @@ Customers want to be able to quickly find content that is relevant to them. Why 
 
 See [Crownpeak Search G2 Private Content Best Practice Examples](private-content-examples/README.md) for further information.
 
+***
 
 ## Realtime Indexing
 
@@ -74,6 +78,7 @@ A number of use-cases where Realtime Indexing would prove advantageous:
 
 See [Crownpeak Search G2 Realtime Indexing Best Practice Examples](realtime-indexing-examples/README.md) for further information.
 
+***
 
 ## Search G2 SDK
 
@@ -88,6 +93,8 @@ CrownPeak Search includes a fully supported Software Development Kit, enabling y
 * Keep version numbers for backwards compatibility.
 
 See [Crownpeak Search G2 SDK Best Practice Examples](search-g2-sdk-javascript-examples/README.md) for further information.
+
+***
 
 ## Disclaimer
 
