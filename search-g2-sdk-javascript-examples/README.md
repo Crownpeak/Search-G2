@@ -1,4 +1,5 @@
-![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo") [www.crownpeak.com](http://www.crownpeak.com)
+![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo")
+[www.crownpeak.com](http://www.crownpeak.com)
 
 # Crownpeak Search G2 SDK Best Practice Examples
 

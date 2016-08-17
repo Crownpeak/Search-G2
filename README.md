@@ -1,3 +1,6 @@
+![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo")
+[www.crownpeak.com](http://www.crownpeak.com)
+
 # Crownpeak Search G2 Best Practice Examples
 
 CrownPeak's Search platform is a highly-scalable, high-performance, enterprise-grade indexing & query platform, based upon the Apache Lucene Software Library & Apache SolrCloud. CrownPeak Search is available to all customers within the CrownPeak subscription at no additional cost.

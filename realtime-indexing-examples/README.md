@@ -1,3 +1,6 @@
+![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo")
+[www.crownpeak.com](http://www.crownpeak.com)
+
 # Crownpeak Search G2 Realtime Indexing Best Practice Examples
 
 CrownPeak Search's Realtime Indexing enhances the existing search platform by providing a direct connection between the CrownPeak CMS & CrownPeak Search. With this enhancement, customers & partners can build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
