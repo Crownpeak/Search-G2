@@ -35,7 +35,7 @@ Example of a Search G2 CMS Realtime Indexing Insert / Update Template:
 //set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document insert/update to CrownPeak Search
 var doc = new SearchG2JsonParams
 {
-    /*Id = asset.Id.ToString(), //note that this is not required if the value asset.Id.ToString() is to be used as the document identifier in CrownPeak Search*/
+    /*Id = asset.BranchId.ToString(), //note that this is not required if the value asset.BranchId.ToString() is to be used as the document identifier in CrownPeak Search*/
     Operation = SearchG2JsonParams.OperationType.Create, //or SearchG2JsonParams.OperationType.Update
     Overwrite = true //if a document exists with this Id, overwrite it
 };
@@ -61,7 +61,7 @@ Example of a Search G2 CMS Realtime Indexing Delete Template:
 //set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document delete from CrownPeak Search
 var doc = new SearchG2JsonParams
 {
-    /*Id = asset.Id.ToString(), //note that this is not required if the value asset.Id.ToString() is to be used as the document identifier in CrownPeak Search*/
+    /*Id = asset.BranchId.ToString(), //note that this is not required if the value asset.BranchId.ToString() is to be used as the document identifier in CrownPeak Search*/
     Operation = SearchG2JsonParams.OperationType.Delete
 };
  
