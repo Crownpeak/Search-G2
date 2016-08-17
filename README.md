@@ -28,7 +28,7 @@ Where custom data is to be stored, the field prefix "custom_{type}_{fieldname}" 
 
 ```
 * custom_i_{{fieldname}} - Integer (e.g. custom_i_myintegerfieldname);
-* custom_s_{{fieldname}} - String (e.g. custom_s_mystringfieldname) - String fields are not tokenized, meaning you can search for exact matches only (good for filtering);
+* custom_s_{{fieldname}} - String (e.g. custom_s_mystringfieldname) - String fields are not tokenized, meaning you can search for exact matches only (good for filtering). Limited to 32Kb;
 * custom_l_{{fieldname}} - Long (e.g. custom_l_mylongfieldname);
 * custom_t_{{fieldname}} - Text (e.g. custom_t_mytextfieldname) - Text fields are tokenized, enabling you to use search within them to return values;
 * custom_b_{{fieldname}} - Boolean (e.g. custom_b_mybooleanfieldname);
@@ -43,7 +43,7 @@ By default, all fields contain single values, however, the following fields can 
 
 ```
 * custom_is_{{fieldname}} - Multi-valued integer field (e.g. custom_is_mymultivaluedintegerfieldname);
-* custom_ss_{{fieldname}} - Multi-valued string field (e.g. custom_ss_mymultivaluedstringfieldname);
+* custom_ss_{{fieldname}} - Multi-valued string field (e.g. custom_ss_mymultivaluedstringfieldname). Limited to 32Kb per entity;
 * custom_ls_{{fieldname}} - Multi-valued long field (e.g. custom_ls_mymultivaluedlongfieldname);
 * custom_txt_{{fieldname}} - Multi-valued text field (e.g. custom_txt_mymultivaluedtextfieldname);
 * custom_bs_{{fieldname}} - Multi-valued boolean field (e.g. custom_bs_mymultivaluedbooleanfieldname);
