@@ -1,3 +1,5 @@
+![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo") [www.crownpeak.com](http://www.crownpeak.com)
+
 # Crownpeak Search G2 SDK Best Practice Examples
 
 CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
@@ -12,14 +14,14 @@ CrownPeak Search includes a fully supported Software Development Kit, enabling y
 
 We provide a few examples of the use of the Crownpeak Search G2 SDK, using different techologies for simple set-up:
 
-* [KnockoutJS](./knockoutjs-search-g2-sdk-javascript-example.html)
-* [Plain Javascript](./plainjs-search-g2-sdk-javascript-example.html)
+* [KnockoutJS](http://htmlpreview.github.io/?https://github.com/Crownpeak/search-g2/blob/master/search-g2-sdk-javascript-examples/knockoutjs-search-g2-sdk-javascript-example.html) - [Source](./knockoutjs-search-g2-sdk-javascript-example.html)
+* [Plain Javascript](http://htmlpreview.github.io/?https://github.com/Crownpeak/search-g2/blob/master/search-g2-sdk-javascript-examples/plainjs-search-g2-sdk-javascript-example.html) - [Source](./plainjs-search-g2-sdk-javascript-example.html)
 
 We also provide a few examples of the use of the Crownpeak Search G2 SDK, for more advanced use-cases:
 
-* [Keyword Search](./advanced/knockoutjs-search-g2-sdk-javascript-keyword-example-advanced.html)
-* [Geospatial Search](./advanced/knockoutjs-search-g2-sdk-javascript-geospatial-example-advanced.html)
-* [Product Search](./advanced/knockoutjs-search-g2-sdk-javascript-products-example-advanced.html)
+* [Keyword Search](http://htmlpreview.github.io/?https://github.com/Crownpeak/search-g2/blob/master/search-g2-sdk-javascript-examples/advanced/knockoutjs-search-g2-sdk-javascript-keyword-example-advanced.html) - [Source](./advanced/knockoutjs-search-g2-sdk-javascript-keyword-example-advanced.html)
+* [Geospatial Search](http://htmlpreview.github.io/?https://github.com/Crownpeak/search-g2/blob/master/search-g2-sdk-javascript-examples/advanced/knockoutjs-search-g2-sdk-javascript-geospatial-example-advanced.html) - [Source](./advanced/knockoutjs-search-g2-sdk-javascript-geospatial-example-advanced.html)
+* [Product Search](https://github.com/Crownpeak/search-g2/blob/master/search-g2-sdk-javascript-examples/advanced/knockoutjs-search-g2-sdk-javascript-products-example-advanced.html) - [Source](./advanced/knockoutjs-search-g2-sdk-javascript-products-example-advanced.html)
 
 ***
 
