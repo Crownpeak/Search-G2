@@ -1,5 +1,4 @@
-![Crownpeak Logo](../images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo")
-[www.crownpeak.com](http://www.crownpeak.com)
+<a href="http://www.crownpeak.com" target="_blank">![Crownpeak Logo](images/logo/crownpeak-logo.png?raw=true "Crownpeak Logo")</a>
 
 # Crownpeak Search G2 Best Practice Examples
 
