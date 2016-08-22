@@ -27,9 +27,9 @@ Finally, configure Search G2 CMS Realtime Indexing Templates to define which dat
 
 There are 3 Templates that you can configure in order to use Search G2 Realtime Indexing:
 
-* search_g2_insert.aspx - This is fired first time an Asset is published;
-* search_g2_update.aspx - This is fired for subsequent updates to an existing Asset;
-* search_g2_delete.aspx - This is fired for delete request for an existing Asset.
+* search\_g2\_insert.aspx - This is fired first time an Asset is published;
+* search\_g2\_update.aspx - This is fired for subsequent updates to an existing Asset;
+* search\_g2\_delete.aspx - This is fired for delete request for an existing Asset.
 
 Example of a Search G2 CMS Realtime Indexing Insert / Update Template:
 
@@ -76,6 +76,52 @@ context.JsonParams.Add(doc);
 A record is added to the System Log under 'Custom' in the Action filter when an asset is sent for Realtime Indexing.  This log can be viewed under Reports > Audit > System (see below):
 
 ![searchg2-realtimeindexing-logging-example.png](../images/examples/searchg2-realtimeindexing-logging-example.png?raw=true "searchg2-realtimeindexing-logging-example.png")
+
+***
+## Binary Content Enhancement
+
+The Crownpeak Search G2 Binary Content Enhancement allows the metadata & content from a Binary Asset (e.g. PDF, Microsoft Office) to be extracted, in order for it to be passed into a Search G2 Collection during Realtime Indexing.
+
+When a Binary Asset is uploaded to the Crownpeak CMS, the file is passed to our Content Extraction Service, which stores the returned metadata & content string against the Binary Asset. There is also a just-in-time function to synchronously extract the data during Realtime Indexing publishing, in the event of it not having been previously stored - this is useful for use-cases where this feature is retro-fitted into an application, without the need to re-upload all Binary Assets.
+
+Assuming that are using Input.ShowAcquireDocument("Pick a document", "document”); in your input.aspx Template File, then you could use the following code to store the metadata & content from the Binary Asset within a Realtime Indexing Template file:
+
+```
+var document = Asset.Load(asset["document"]);
+if (document.IsLoaded)
+{
+	var extractedContent = document.ExtractedContent;
+	if (extractedContent != null)
+	{
+		doc.AddFixed("content", extractedContent.Content);
+
+		var metadata = extractedContent.Metadata;
+		if (metadata != null)
+		{
+			if (metadata.ContainsKey("meta:author"))
+			{
+				// NOTE: these values are usually strings, but can sometimes be arrays of strings
+				// depending on the source document and the property
+				var value = metadata["meta:author"] as string;
+				if (value != null)
+					doc.AddFixed("custom_s_author", value);
+			}
+			if (metadata.ContainsKey("meta:creation-date"))
+			{
+				var value = metadata["meta:creation-date"] as string;
+				if (value != null)
+					doc.AddFixed("custom_dt_created", value);
+			}
+			if (metadata.ContainsKey("Last-Modified"))
+			{
+				var value = metadata["Last-Modified"] as string;
+				if (value != null)
+					doc.AddFixed("custom_dt_modified", value);
+			}
+		}
+	}
+}
+```
 
 ***
 
