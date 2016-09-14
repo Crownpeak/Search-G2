@@ -71,6 +71,8 @@ var doc = new SearchG2JsonParams
 context.JsonParams.Add(doc);
 ```
 
+_NOTE: All string fields are limited to 32KB of data, the Crownpeak Search G2 Realtime Indexing enhancement will automatically truncate any field values to 32KB, if the value is larger._
+
 ### Logging Search G2 Realtime Indexing Actions
 
 A record is added to the System Log under 'Custom' in the Action filter when an asset is sent for Realtime Indexing.  This log can be viewed under Reports > Audit > System (see below):
