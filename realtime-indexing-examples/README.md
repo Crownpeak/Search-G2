@@ -11,6 +11,8 @@ A number of use-cases where Realtime Indexing would prove advantageous:
 * Indexing & querying protected content that cannot be deployed to the delivery environment for security reasons.
 * Choosing not to use site crawling at all.
 
+_NOTE: When using Realtme Indexing, you should use a separate Search G2 Collection, and NOT share with content that is sourced from a crawl operation._
+
 ***
 
 ## Configuring Crownpeak Search G2 Realtime Indexing
