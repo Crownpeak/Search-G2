@@ -2,22 +2,22 @@
 
 # Crownpeak Search G2 Realtime Indexing Best Practice Examples
 
-CrownPeak Search's Realtime Indexing enhances the existing search platform by providing a direct connection between the CrownPeak CMS & CrownPeak Search. With this enhancement, customers & partners can build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
+CrownPeak Search's Realtime Indexing provides a direct connection between the CrownPeak CMS & CrownPeak Search. This enables you to build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
 
-A number of use-cases where Realtime Indexing would prove advantageous:
+Realtime Indexing provides the following advantages:
 
-* Time-critical publications where website crawling is too infrequent for CrownPeak Search update.
+* Time-critical publications where traditional website crawling is too infrequent for content updates.
 * Storing and returning items that otherwise don't need pages that are published to the delivery environment (e.g. office locations when taking advantage of CrownPeak Search's geo-location capability).
 * Indexing & querying protected content that cannot be deployed to the delivery environment for security reasons.
 * Choosing not to use site crawling at all.
 
-_NOTE: When using Realtme Indexing, you should use a separate Search G2 Collection, and NOT share with content that is sourced from a crawl operation._
+_NOTE: When using Realtme Indexing, if you additionally use the Search G2 Crawler to obtain content from another source, you should use a separate Search G2 Collection, and NOT share with content that is sourced from a crawl operation._
 
 ***
 
 ## Configuring Crownpeak Search G2 Realtime Indexing
 
-In order to use Search G2 Realtime Indexing, the Search G2 CMS Connector must be enabled. This connector links the CMS to each Search G2 Collection that you manage. Connectors must be configured initially by Crownpeak Support. Raise a ticket, or send an email to support@crownpeak.com.
+To configure Search G2 Realtime Indexing, the Search G2 CMS Connector must be enabled. This connector links the CMS to each Search G2 Collection that you manage. Connectors must be configured initially by Crownpeak Support. Raise a ticket, or send an email to support@crownpeak.com.
 
 Once the Search G2 CMS Connector has been configured, you need to update your CMS Publishing Packages to select which Search G2 CMS Connector to use for deployment (see image below):
 

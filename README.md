@@ -17,6 +17,7 @@ CrownPeak's Search platform is a highly-scalable, high-performance, enterprise-g
 * **Public & Private Content** - Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? CrownPeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
 * **Realtime Indexing** - CrownPeak Search is directly connected to the core Content Management platform, enabling Realtime Indexing of content at publish time - ensuring that the most recent content is always presented to your customer. Realtime Indexing also enables the publication of page-based content to CrownPeak Search, enabling search to play a core part in the navigational experience of your customer to enhance their experience.
 * **Regular & Polite Crawling** - In addition to Realtime Indexing, CrownPeak Search fully supports regular crawling of your website (multiple times per day). Website crawling can help you to provide the best possible search experience across all customer touch-points, by indexing content that is located elsewhere in your organization, yet still relevant to the customer, creating a more rounded experience. CrownPeak Search also respects any rules that you deploy within your robots.txt file, meaning that you have full control over what content is crawled, and how often.
+_Note: Website crawling is only available in use-cases where required content is not stored within the Crownpeak CMS._
 * **Standards-Based API** - We know that your teams need to work with standards-based APIs, to ensure that they can do their jobs quickly and efficiently. CrownPeak Search implements a RESTful API for querying, and returns results in JSON or XML, depending on your requirements. This makes it perfect for powering powerful applications, across any channel or device without additional development effort.
 * **Search G2 SDK** - CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
 
@@ -70,11 +71,11 @@ See [Crownpeak Search G2 Private Content Best Practice Examples](private-content
 
 ## Realtime Indexing
 
-CrownPeak Search's Realtime Indexing enhances the existing search platform by providing a direct connection between the CrownPeak CMS & CrownPeak Search. With this enhancement, customers & partners can build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
+CrownPeak Search's Realtime Indexing provides a direct connection between the CrownPeak CMS & CrownPeak Search. This enables you to build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
 
-A number of use-cases where Realtime Indexing would prove advantageous:
+Realtime Indexing provides the following advantages:
 
-* Time-critical publications where website crawling is too infrequent for CrownPeak Search update.
+* Time-critical publications where traditional website crawling is too infrequent for content updates.
 * Storing and returning items that otherwise don't need pages that are published to the delivery environment (e.g. office locations when taking advantage of CrownPeak Search's geo-location capability).
 * Indexing & querying protected content that cannot be deployed to the delivery environment for security reasons.
 * Choosing not to use site crawling at all.
