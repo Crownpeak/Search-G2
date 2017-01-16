@@ -15,6 +15,14 @@ _NOTE: When using Realtme Indexing, if you additionally use the Search G2 Crawle
 
 ***
 
+## Crownpeak DXM Webinar - Implementing Search G2 Realtime Indexing
+Released in January 2017, the Crownpeak DXM Webinar - Implementing Search G2 Realtime Indexing, gives a comprehensive walk through of how to use the Crownpeak CMS to publish content directly to Search G2, using Realtime Indexing.
+
+<a href="http://crownpeak.vzaar.me/8975065" target="_blank">
+![Crownpeak DXM Webinar - Implementing Search G2 Realtime Indexing - Screenshot](../images/screenshots/searchg2-realtimeindexing-webinar-screenshot.png "Crownpeak DXM Webinar - Implementing Search G2 Realtime Indexing - Screenshot")</a>
+
+***
+
 ## Configuring Crownpeak Search G2 Realtime Indexing
 
 To configure Search G2 Realtime Indexing, the Search G2 CMS Connector must be enabled. This connector links the CMS to each Search G2 Collection that you manage. Connectors must be configured initially by Crownpeak Support. Raise a ticket, or send an email to support@crownpeak.com.
