@@ -41,44 +41,160 @@ There are 3 Templates that you can configure in order to use Search G2 Realtime 
 * search\_g2\_update.aspx - This is fired for subsequent updates to an existing Asset;
 * search\_g2\_delete.aspx - This is fired for delete request for an existing Asset.
 
-Example of a Search G2 CMS Realtime Indexing Insert / Update Template:
+Example of a Search G2 CMS Realtime Indexing Insert Template file:
 
 ```
-//set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document insert/update to CrownPeak Search
-var doc = new SearchG2JsonParams
+<%@ Page Language="C#" Inherits="CrownPeak.Internal.Debug.SearchG2Init" %>
+<%@ Import Namespace="CrownPeak.CMSAPI" %>
+<%@ Import Namespace="CrownPeak.CMSAPI.Services" %>
+<!--DO NOT MODIFY CODE ABOVE THIS LINE-->
+<%@ Import Namespace="Search_G2.Project.Library" %>
+<% //MODIFY or ADD Import Statements to Define Namespaces Used by the Template %>
+<%//This plugin uses SearchG2Context as its context class type%>
+<%
+	SearchG2Helper.UpdateSearchG2(SearchG2JsonParams.OperationType.Create, asset, context);
+%>
+```
+
+Example of a Search G2 CMS Realtime Indexing Update Template file:
+
+```
+<%@ Page Language="C#" Inherits="CrownPeak.Internal.Debug.SearchG2Init" %>
+<%@ Import Namespace="CrownPeak.CMSAPI" %>
+<%@ Import Namespace="CrownPeak.CMSAPI.Services" %>
+<!--DO NOT MODIFY CODE ABOVE THIS LINE-->
+<%@ Import Namespace="Search_G2.Project.Library" %>
+<% //MODIFY or ADD Import Statements to Define Namespaces Used by the Template %>
+<%//This plugin uses SearchG2Context as its context class type%>
+<%
+	SearchG2Helper.UpdateSearchG2(SearchG2JsonParams.OperationType.Update, asset, context);
+%>
+```
+
+Example of a Search G2 CMS Realtime Indexing Delete Template file:
+
+```
+<%@ Page Language="C#" Inherits="CrownPeak.Internal.Debug.SearchG2Init" %>
+<%@ Import Namespace="CrownPeak.CMSAPI" %>
+<%@ Import Namespace="CrownPeak.CMSAPI.Services" %>
+<!--DO NOT MODIFY CODE ABOVE THIS LINE-->
+<%@ Import Namespace="Search_G2.Project.Library" %>
+<% //MODIFY or ADD Import Statements to Define Namespaces Used by the Template %>
+<%//This plugin uses SearchG2Context as its context class type%>
+<%
+SearchG2Helper.UpdateSearchG2(SearchG2JsonParams.OperationType.Delete, asset, context);
+%>
+```
+
+In the example above, we are calling a method on the SearchG2Helper class. This class is pasted below for reference. _NOTE: You should alter this to match your implementation requirements._
+
+```
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CrownPeak.CMSAPI;
+using CrownPeak.CMSAPI.Services;
+/* Some Namespaces are not allowed. */
+namespace Search_G2.Project.Library
 {
-    /*Id = asset.BranchId.ToString(), //note that this is not required if the value asset.BranchId.ToString() is to be used as the document identifier in CrownPeak Search*/
-    Operation = SearchG2JsonParams.OperationType.Create, //or SearchG2JsonParams.OperationType.Update
-    Overwrite = true //if a document exists with this Id, overwrite it
-};
- 
-doc.Add("custom_s_language", "language"); //custom string field "language", takes value from asset["language"]
-doc.Add("custom_s_country", "country");
-doc.Add("custom_s_product", "product");
-doc.Add("title", "title");
-doc.Add("content", "content");
-doc.Add("type", "type");
-doc.AddFixed("contentLength", asset.Raw["content"].Length.ToString()); //standard CrownPeak Search field "contentLength", taking value from asset.Raw["content"].Length.ToString()
-doc.AddFixed("tstamp", DateTime.UtcNow.ToString("O")); //standard CrownPeak Search field "stamp", taking value from DateTime.UtcNow.ToString("O")
-doc.Add("date", AssetPropertyNames.ModifiedDate);
-doc.Add("lastModified", AssetPropertyNames.ModifiedDate);
- 
-//add the SearchG2JsonParams document to context.JsonParams collection for insert/update to CrownPeak Search.
-context.JsonParams.Add(doc);
-```
+  public static class SearchG2Helper
+  {
+    public static void UpdateSearchG2(SearchG2JsonParams.OperationType type, Asset asset,
+                                     SearchG2Context context)
+    {
+      var doc = new SearchG2JsonParams
+      {
+        Id = asset.BranchId.ToString(),
+        Operation = type,
+        Overwrite = true
+      };
+      
+      if (type != SearchG2JsonParams.OperationType.Delete)
+      {
+      	asset.GetContent();
+        
+        doc.Add("custom_i_asset_id", AssetPropertyNames.Id);
+        doc.Add("custom_i_template_id", AssetPropertyNames.TemplateId);
+        doc.Add("custom_s_template_label", AssetPropertyNames.TemplateLabel);
+        
+        doc.AddFixed("custom_s_url", GetLink(asset, context, true));
+        doc.AddFixed("custom_s_local_url", GetLink(asset, context));
+        
+        switch (asset.TemplateLabel)
+        {
+          case "News Article":
+            UpdateNewsArticle(doc, asset, context);
+            break;
+            // TODO: Other supported templates will go here
+        }
+        
+        doc.AddFixedIfMissing("custom_s_content_type", "text/html");
+        doc.AddIfMissing("custom_dt_created", AssetPropertyNames.CreateDate);
+        doc.AddIfMissing("custom_dt_modified", AssetPropertyNames.ModifiedDate);
+        doc.AddFixedIfMissing("custom_dt_published", DateTime.UtcNow.ToString("o"));
+        var title = asset["html_title"];
+        if (string.IsNullOrWhiteSpace(title)) title = asset["meta_title"];
+        if (string.IsNullOrWhiteSpace(title)) title = asset.Label;
+        doc.AddFixedIfMissing("title", title);
+        doc.AddFixedIfMissing("custom_s_title", title);
+        doc.AddFixedIfMissing("content", Util.StripHtml(asset.Show()));
+      }
+      
+      context.JsonParams.Add(doc);
+      
+      Util.Log(asset, "Search G2 {0} operation: {1}", type, context.GetJson());
+    }
+    
+    private static void UpdateNewsArticle(SearchG2JsonParams doc, Asset asset, SearchG2Context context)
+    {
+      doc.AddFixed("custom_s_type", "News Article");
+      doc.Add("title", "headline");
+      doc.AddFixed("content", Util.StripHtml(asset["body"]));
+      doc.Add("custom_s_article_type", "article_type");
+      doc.Add("custom_dt_date", "date");
+      doc.Add("custom_s_headline", "headline");
+      doc.Add("custom_s_precis", "precis");
+    }
+    
+    private static string GetLink(Asset asset, SearchG2Context context, bool includeDomain = false)
+	{
+		return Util.ReplaceCptInternals(Util.ReplaceAttachments(asset.GetLink(includeDomain)));
+	}
+    
+    #region Extension Helper Methods
+	private static bool IsFieldSet(this SearchG2JsonParams doc, string jsonName)
+	{
+		return doc.Fields.Any(f => f.Key == jsonName) || doc.Fixeds.Any(f => f.Key == jsonName);
+	}
 
-Example of a Search G2 CMS Realtime Indexing Delete Template:
+	public static void AddIfMissing(this SearchG2JsonParams doc, string jsonName, AssetPropertyNames value)
+	{
+		if (!doc.IsFieldSet(jsonName)) doc.Add(jsonName, value);
+	}
 
-```
-//set-up the CrownPeak.CMSAPI.Services.SearchG2JsonParams object for document delete from CrownPeak Search
-var doc = new SearchG2JsonParams
-{
-    /*Id = asset.BranchId.ToString(), //note that this is not required if the value asset.BranchId.ToString() is to be used as the document identifier in CrownPeak Search*/
-    Operation = SearchG2JsonParams.OperationType.Delete
-};
- 
-//add the SearchG2JsonParams document to context.JsonParams collection for delete from CrownPeak Search.
-context.JsonParams.Add(doc);
+	public static void AddIfMissing(this SearchG2JsonParams doc, string jsonName, string value)
+	{
+		if (!doc.IsFieldSet(jsonName)) doc.Add(jsonName, value);
+	}
+
+	public static void AddFixedIfMissing(this SearchG2JsonParams doc, string jsonName, string value)
+	{
+		if (!doc.IsFieldSet(jsonName)) doc.AddFixed(jsonName, value);
+	}
+
+	public static void AddFixedIfMissing(this SearchG2JsonParams doc, string jsonName, IEnumerable<string> values)
+	{
+		if (!doc.IsFieldSet(jsonName)) doc.AddFixed(jsonName, values);
+	}
+
+	public static void AddFixedIfMissing(this SearchG2JsonParams doc, string jsonName, params string[] values)
+	{
+		if (!doc.IsFieldSet(jsonName)) doc.AddFixed(jsonName, values);
+	}
+	#endregion
+  }
+}
 ```
 
 _NOTE: All string fields are limited to 32KB of data, the Crownpeak Search G2 Realtime Indexing enhancement will automatically truncate any field values to 32KB, if the value is larger._
