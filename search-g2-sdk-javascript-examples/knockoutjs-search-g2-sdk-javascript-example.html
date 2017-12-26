@@ -181,7 +181,7 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 					// Push a new filter onto the end of our collection
 					var value = filter[0];
 					// TODO: this feels dirty - is there a better way?
-					var e = event.originalEvent.srcElement;
+					var e = event.originalEvent ? event.originalEvent.srcElement : (event.target || event.srcElement);
 					var field = e.getAttribute("field");
 					if (!field) field = e.parentElement.getAttribute("field");
 					self.filterQueries.push(field + ":\"" + value + "\"");
