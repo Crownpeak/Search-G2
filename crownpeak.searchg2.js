@@ -15,7 +15,7 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.1
+// Version: 1.0.2
 */
 
 function CrownPeakSearch(options) {
@@ -189,7 +189,8 @@ function CrownPeakSearch(options) {
 	/// Add a pager property to make it easier to render one
 	/// </summary>
 	function addPager(data) {
-		if (data && data.response && data.response.start && data.response.numFound) {
+		if (data && data.response && (data.response.start || data.response.start === 0)
+			&& (data.response.numFound || data.response.numFound === 0)) {
 			// Add a simple pager to the output - the user can customise it if they like
 			data.pager = {
 				page: data.response.start / _rows + 1,

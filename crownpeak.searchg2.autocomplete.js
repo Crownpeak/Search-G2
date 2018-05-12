@@ -15,7 +15,7 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.1
+// Version: 1.0.2
 */
 
 function CrownPeakAutocomplete(control, options) {
@@ -192,7 +192,7 @@ function CrownPeakAutocomplete(control, options) {
 		}
 	}
 
-	// The key press timer has run our
+	// The key press timer has run out
 	function keyTimerTick() {
 		_keyTimer = null;
 		if (_enabled) {
@@ -213,7 +213,7 @@ function CrownPeakAutocomplete(control, options) {
 					}
 
 					// Autocomplete on just the last word
-					_cps.autocomplete(suffix)
+					_cps.autocomplete(suffix.toLocaleLowerCase ? suffix.toLocaleLowerCase() : suffix.toLowerCase())
 						.done(function (data) {
 							var html = [];
 							var re = new RegExp(suffix);
