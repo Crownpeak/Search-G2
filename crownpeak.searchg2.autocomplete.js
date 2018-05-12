@@ -15,7 +15,7 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.0
+// Version: 1.0.1
 */
 
 function CrownPeakAutocomplete(control, options) {
@@ -237,9 +237,9 @@ function CrownPeakAutocomplete(control, options) {
 		}
 	}
 
-	function autocompleteMouseUpHandler() {
-		if (event.srcElement) {
-			var e = event.srcElement;
+	function autocompleteMouseUpHandler(event) {
+		var e = event.target || event.srcElement;
+		if (e) {
 			while (e && e.tagName && e.tagName != "A") e = e.parentElement;
 			var text = getData(e);
 			removePopup();
@@ -369,7 +369,7 @@ function CrownPeakAutocomplete(control, options) {
 	/// Enable the autocomplete functionality
 	/// </summary>
 	/// <param name="enabled">True (default) to enable autocomplete, or false to disable</param>
-	this.enable = function (enabled) {
+	this.enable = function(enabled) {
 		if (enabled != null && enabled !== undefined)
 			enableInternal(enabled);
 		else
@@ -378,7 +378,7 @@ function CrownPeakAutocomplete(control, options) {
 	/// <summary>
 	/// Disable the autocomplete functionality
 	/// </summary>
-	this.disable = function () {
+	this.disable = function() {
 		enableInternal(false);
 	};
 	/// <summary>

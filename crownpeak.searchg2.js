@@ -15,7 +15,7 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.0
+// Version: 1.0.1
 */
 
 function CrownPeakSearch(options) {
@@ -61,7 +61,7 @@ function CrownPeakSearch(options) {
 	parseArguments(options);
 
 	// Fill for missing console.log for oldIE
-	if (typeof console === "undefined") console = { log: function () { } }
+	if (typeof console === "undefined") console = { log: function() { } }
 	else if (!console.log) { console.log = function () { }; }
 
 	function parseArguments(options) {
@@ -189,16 +189,18 @@ function CrownPeakSearch(options) {
 	/// Add a pager property to make it easier to render one
 	/// </summary>
 	function addPager(data) {
-		// Add a simple pager to the output - the user can customise it if they like
-		data.pager = {
-			page: data.response.start / _rows + 1,
-			pages: [],
-			total: Math.ceil(data.response.numFound / _rows)
-		};
-		if (_rows > 0) {
-			// Simple pager just has one entry for each page
-			for (var i = 0; i < data.response.numFound / _rows; i++) {
-				data.pager.pages.push(i + 1);
+		if (data && data.response && data.response.start && data.response.numFound) {
+			// Add a simple pager to the output - the user can customise it if they like
+			data.pager = {
+				page: data.response.start / _rows + 1,
+				pages: [],
+				total: Math.ceil(data.response.numFound / _rows)
+			};
+			if (_rows > 0) {
+				// Simple pager just has one entry for each page
+				for (var i = 0; i < data.response.numFound / _rows; i++) {
+					data.pager.pages.push(i + 1);
+				}
 			}
 		}
 	}
@@ -323,7 +325,7 @@ function CrownPeakSearch(options) {
 
 		// Make a JSONP request to our Solr collection
 		getUrl(thisUrl, _timeout)
-			.done(function (data) {
+			.done(function(data) {
 				if (_highlight && data.highlighting) {
 					copyHighlights(data);
 				}
@@ -343,7 +345,7 @@ function CrownPeakSearch(options) {
 				// Search complete - resolve the promise
 				dfd.resolve(data);
 			})
-			.fail(function (status, url, error) { //jqXHR, textStatus, errorThrown) {
+			.fail(function(status, url, error) { //jqXHR, textStatus, errorThrown) {
 				dfd.reject(status, url, error);
 			});
 
@@ -645,7 +647,7 @@ function CrownPeakSearch(options) {
 	/// <param name="page">The page number (starting at 1) of results that you wish to retrieve</param>
 	/// <param name="filterQueries">An array of strings in the format "field:value" to apply to the query</param>
 	/// <returns>A Deferred object that will be resolved when the query is complete</returns>
-	this.query = function (text, page, filterQueries) {
+	this.query = function(text, page, filterQueries) {
 		if (!page) page = 1;
 		return internalQuery(text, page - 1, filterQueries);
 	};
@@ -664,7 +666,7 @@ function CrownPeakSearch(options) {
 	/// </summary>
 	/// <param name="query">The query, sent in an HTTP GET request. See http://lucene.apache.org/solr/3_6_2/doc-files/tutorial.html for more information</param>
 	/// <returns>A Deferred object that will be resolved when the query is complete</returns>
-	this.raw = function (query) {
+	this.raw = function(query) {
 		return internalRawQuery(query);
 	};
 }
