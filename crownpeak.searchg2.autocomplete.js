@@ -15,13 +15,30 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.2
+// Version: 1.0.3
 */
 
 function CrownPeakAutocomplete(control, options) {
 	var self = this;
 
 	// Properties that get passed in
+	/* Search proxy allows all queries to be sent via a proxy url - for security reasons
+	 * Search proxy supports the following macros
+	 * %%PROTOCOL%% - "https:" if this script was loaded via https, or "http:" if not
+	 * %%COLLECTION%% - the collection being requested
+	 * %%HANDLER%% - the handler being used
+	 * %%URL%% - the entire url for the search
+	 * %%URLENCODED%% - the entire url for the search, URI encoded
+	 * Leave the proxy blank (or null, or undefined, etc.) if you don't want to use one
+	 */
+	var _searchProxy = "";
+	/* Endpoint supports the following macros
+	 * %%PROTOCOL%% - "https:" if this script was loaded via https, or "http:" if not
+	 * %%COLLECTION%% - the collection being requested
+	 * %%HANDLER%% - the handler being used
+	 * %%QUERY%% - the querystring extension (do not include the "?")
+	 */
+	var _endpoint = "%%PROTOCOL%%//searchg2.crownpeak.net/%%COLLECTION%%/%%HANDLER%%?%%QUERY%%";
 	var _keyTimeout = 250;
 	var _mouseTimeout = 3000;
 	var _minLength = 3;
@@ -52,9 +69,9 @@ function CrownPeakAutocomplete(control, options) {
 		_control = control;
 		if (options) {
 			if (options.collection) _cps.collection(options.collection);
-			if (options.timeout || options.timeout == 0) _keyTimeout = options.timeout;
-			if (options.mouseTimeout || options.mouseTimeout == 0) _mouseTimeout = options.mouseTimeout;
-			if (options.minLength || options.minLength == 0) _minLength = options.minLength;
+			if (options.timeout || options.timeout === 0) _keyTimeout = options.timeout;
+			if (options.mouseTimeout || options.mouseTimeout === 0) _mouseTimeout = options.mouseTimeout;
+			if (options.minLength || options.minLength === 0) _minLength = options.minLength;
 			if (options.highlightStart) _highlightStart = options.highlightStart;
 			if (options.highlightEnd) _highlightEnd = options.highlightEnd;
 			if (options.opening) _callbacks.opening = options.opening;
@@ -62,6 +79,8 @@ function CrownPeakAutocomplete(control, options) {
 			if (options.selected || options.callback) _callbacks.selected = options.selected || options.callback;
 			if (options.closing) _callbacks.closing = options.closing;
 			if (options.closed) _callbacks.closed = options.closed;
+			if (options.endpoint) _cps.endpoint(options.endpoint);
+			if (options.searchProxy) _cps.searchProxy(options.searchProxy);
 		}
 	}
 
@@ -151,11 +170,11 @@ function CrownPeakAutocomplete(control, options) {
 
 	// Set the selected autocomplete item to be number n
 	function setSelected(n) {
-		if (_popup && _enabled && _selectedIndex != n) {
+		if (_popup && _enabled && _selectedIndex !== n) {
 			var items = _popup.children;
 			for (var i = 0, len = items.length; i < len; i++) {
 				var item = items[i];
-				if (i == n && item.className !== "selected") {
+				if (i === n && item.className !== "selected") {
 					item.className = "selected";
 				}
 				else if (item.className === "selected") {
@@ -215,18 +234,23 @@ function CrownPeakAutocomplete(control, options) {
 					// Autocomplete on just the last word
 					_cps.autocomplete(suffix.toLocaleLowerCase ? suffix.toLocaleLowerCase() : suffix.toLowerCase())
 						.done(function (data) {
-							var html = [];
-							var re = new RegExp(suffix);
-							if (data.suggestions && data.suggestions.length) {
-								// Build suggestions with our prefix and the suggestion
-								for (var i = 0, len = data.suggestions.length; i < len; i++) {
-									var s = data.suggestions[i];
-									html.push("<li><a href=\"#\" data-text=\"" + escape(prefix + s) + "\">" + s.replace(re, _highlightStart + prefix + suffix + _highlightEnd) + "</a></li>");
+							try {
+								var html = [];
+								var re = new RegExp(suffix);
+								if (data.suggestions && data.suggestions.length) {
+									// Build suggestions with our prefix and the suggestion
+									for (var i = 0, len = data.suggestions.length; i < len; i++) {
+										var s = data.suggestions[i];
+										html.push("<li data-text=\"" + escape(prefix + s) + "\"><a href=\"#\">" + s.replace(re, _highlightStart + prefix + suffix + _highlightEnd) + "</a></li>");
+									}
 								}
+								// Record the last result to save time later
+								_lastResult = html.join("");
+								setPopup(_lastResult);
+							} catch (e) {
+								// Don't panic - they probably typed something that's not a valid regex
+								removePopup();
 							}
-							// Record the last result to save time later
-							_lastResult = html.join("");
-							setPopup(_lastResult);
 						});
 					_lastSearch = text;
 				}
@@ -240,7 +264,7 @@ function CrownPeakAutocomplete(control, options) {
 	function autocompleteMouseUpHandler(event) {
 		var e = event.target || event.srcElement;
 		if (e) {
-			while (e && e.tagName && e.tagName != "A") e = e.parentElement;
+			while (e && e.tagName && e.tagName !== "LI") e = e.parentElement;
 			var text = getData(e);
 			removePopup();
 			if (text) callback("selected", text);
@@ -283,7 +307,7 @@ function CrownPeakAutocomplete(control, options) {
 	}
 
 	function controlClickHandler(event) {
-		if (!_popup && _control.value == _lastSearch && _lastResult) {
+		if (!_popup && _control.value === _lastSearch && _lastResult) {
 			// Redisplay the last result, for if the popup had closed and they want to reopen
 			_selectedIndex = -1;
 			setPopup(_lastResult);
@@ -301,17 +325,19 @@ function CrownPeakAutocomplete(control, options) {
 	function controlKeyDownHandler(event) {
 		if (event.keyCode === 40) {
 			// Cursor down
-			if (!_popup && _control.value == _lastSearch && _lastResult) {
+			if (!_popup && _control.value === _lastSearch && _lastResult) {
 				// Redisplay the last result, for if the popup had closed and they want to reopen
 				_selectedIndex = -1;
 				setPopup(_lastResult);
 			} else {
 				moveSelected(1);
 			}
+			if (event.cancelable) event.preventDefault(true);
 		}
 		else if (event.keyCode === 38) {
 			// Cursor up
 			moveSelected(-1);
+			if (event.cancelable) event.preventDefault(true);
 		}
 		else if (event.keyCode === 27 && _popup) {
 			// Escape
@@ -325,7 +351,7 @@ function CrownPeakAutocomplete(control, options) {
 				var items = _popup.children;
 				for (var i = 0, len = items.length; i < len; i++) {
 					if (items[i].className === "selected") {
-						var text = getData(items[i].children[0]);
+						var text = getData(items[i]);
 						callback("selected", text);
 					}
 				}
@@ -355,6 +381,8 @@ function CrownPeakAutocomplete(control, options) {
 	// Getters and setters would be nice, but in the meantime...
 	this.collection = function (value) { if (value !== undefined) _cps.collection(value); return _cps.collection(); };
 	this.popup = function () { return _popup; }
+	this.endpoint = function (value) { if (value !== undefined) _endpoint = value; return _endpoint; };
+	this.searchProxy = function (value) { if (value !== undefined) _searchProxy = value; return _searchProxy; };
 
 	/// <summary>
 	/// Initialize the autocomplete functionality, and enable it

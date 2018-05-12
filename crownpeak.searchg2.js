@@ -15,7 +15,7 @@
 // WILL ANY COPYRIGHT HOLDER, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE 
 // (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER PROGRAMS),
 // EVEN IF SUCH HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-// Version: 1.0.2
+// Version: 1.0.3
 */
 
 function CrownPeakSearch(options) {
@@ -286,29 +286,6 @@ function CrownPeakSearch(options) {
 	}
 
 	/// <summary>
-	/// Copy the Collations structure from Solr 6.1 format to Solr 4.6 format
-	/// </summary>
-	function copyCollations(data) {
-		if (data && data.spellcheck && data.spellcheck.suggestions && data.spellcheck.collations) {
-			for (var i = 0, len = data.spellcheck.collations.length; i < len; i++) {
-				var item = data.spellcheck.collations[i];
-				if (typeof item === "object" && item != null) {
-					var newItem = [];
-					for (var key in item) {
-						if (item.hasOwnProperty(key)) {
-							newItem.push(key);
-							newItem.push(item[key]);
-						}
-					}
-					data.spellcheck.suggestions.push(newItem);
-				} else {
-					data.spellcheck.suggestions.push(item);
-				}
-			}
-		}
-	}
-
-	/// <summary>
 	/// Execute the provided query against the configured url and collection
 	/// </summary>
 	function internalRawQuery(query, handler) {
@@ -337,7 +314,6 @@ function CrownPeakSearch(options) {
 				else {
 					cleanTypes(data);
 					addResultProxy(data);
-					copyCollations(data);
 					addDidYouMean(data);
 					addNormalizedScores(data);
 					addPager(data);
@@ -373,6 +349,7 @@ function CrownPeakSearch(options) {
 			+ (_sort.length > 0 ? "&sort=" + _sort.join(",") : "")
 			+ (_highlight ? "&hl=true&hl.fl=*&hl.snippets=3&hl.simple.pre=" + escape("<b>") + "&hl.simple.post=" + escape("</b>") + "&f.title.hl.fragsize=50000&f.url.hl.fragsize=50000" : "");
 
+		var geoPostParams = [];
 		if (_geo) {
 			var geoParams = [];
 			if (_geo.location) {
@@ -389,7 +366,7 @@ function CrownPeakSearch(options) {
 			// If they didn't already sort by something else, assume they want by ascending distance
 			if (_sort.length == 0) geoParams.push("sort=geodist()%20asc");
 			// What do they want it called on the output?
-			geoParams.push("fl=" + encodeURI(_geo.outputfield || "_dist_") + ":geodist()");
+			geoPostParams.push("fl=" + encodeURI(_geo.outputfield || "_dist_") + ":geodist()");
 			// Filter results by by range
 			if (_geo.range) {
 				var range = _geo.range;
@@ -417,6 +394,28 @@ function CrownPeakSearch(options) {
 		// If they provided additional parameters, merge them into our set
 		if (_params) data = mergeParameters(data, _params.replace(/^[&]/, ""));
 
+		// If they asked for highlighting and didn't include the id field, add it now
+		if (data.indexOf("&hl=true") > 0) {
+			if (data.indexOf("&fl=") >= 0) {
+				var start = data.indexOf("&fl=") + 1;
+				var end = data.indexOf("&", start);
+				if (end < 0) end = data.length;
+				var i = data.indexOf(",id,", start);
+				if (i < 0 || i > end) {
+					i = data.indexOf(",id&", start);
+					if (i < 0 || i > end) {
+						i = data.indexOf("=id", start);
+						if (i < 0 || i > end) {
+							data = data.replace(/&fl=/, "&fl=id,");
+						}
+					}
+				}
+			}
+		}
+
+		if (geoPostParams && geoPostParams.length)
+			data += "&" + geoPostParams.join("&");
+
 		return internalRawQuery(data);
 	}
 
@@ -424,7 +423,7 @@ function CrownPeakSearch(options) {
 	/// Merge together two sets of parameters and return the result, with s2 taking precendence
 	/// </summary>
 	function mergeParameters(s1, s2) {
-		var PARAMS_TO_IGNORE = ",fl,fq,hl.fl,"; // NOTE: keep the leading/trailing commas
+		var PARAMS_TO_IGNORE = ",fq,hl.fl,"; // NOTE: keep the leading/trailing commas
 		var result = [];
 
 		// Immediate exit conditions
