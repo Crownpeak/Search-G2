@@ -61,9 +61,10 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 
 	<script>
 
-		var ICON_FOLDER = "../images/icons/";
+		var BASE_URL = "../"; //or use https://raw.githubusercontent.com/Crownpeak/search-g2/master/
+		var ICON_FOLDER = BASE_URL + "images/icons/";
 		var ICONS = ",doc,htm,pdf,ppt,txt,xls,";
-		var UNKNOWN_ICON = "../images/icons/txt.png";
+		var UNKNOWN_ICON = ICON_FOLDER+"txt.png";
 
 		// Set some properties on the CrownPeakSearch object
 		var cps = new CrownPeakSearch();
