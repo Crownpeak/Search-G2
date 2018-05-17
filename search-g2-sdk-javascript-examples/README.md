@@ -124,7 +124,7 @@ The entire source of this page is detailed below:
 ```
 <html>
 	<head>
-		<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.min.js"></script>
+		<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.3.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js"></script>
 		<script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
 	</head>
