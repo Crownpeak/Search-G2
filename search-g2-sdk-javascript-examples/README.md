@@ -34,7 +34,7 @@ The following example shows you how to create a simple text-based search page, u
 Within the head element of your page, include the following references:
 
 ```
-<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.0.min.js"></script>
+<script src="https://searchg2-assets.crownpeak.net/crownpeak.searchg2-1.0.3.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
 ```
