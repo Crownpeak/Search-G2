@@ -148,27 +148,19 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 
 	<script>
 
-		var ICON_FOLDER = "../images/icons/";
+		var BASE_URL = "../"; //or use https://raw.githubusercontent.com/Crownpeak/search-g2/master/
+		var ICON_FOLDER = BASE_URL + "images/icons/";
 		var ICONS = ",doc,htm,pdf,ppt,txt,xls,";
-		var UNKNOWN_ICON = "../images/icons/txt.png";
+		var UNKNOWN_ICON = ICON_FOLDER+"txt.png";
 
-		// Set some properties on the CrownPeakSearch object
-		var cps = new CrownPeakSearch();
-		cps.collection("www.crownpeak.com");
-		cps.facets(["title", "type"]);
-		cps.maxFacets(6);
-		cps.highlight(true);
-		//cps.resultProxy("http://test/proxy?search=%%query%%&result=%%index%%&url=");
-		//cps.sort(["url desc"]);
-		//cps.rows(2);
-		cps.spellcheck(true);
-		//cps.parameters("&hl=true&hl.fl=*");
 
 		/// <summary>
 		/// The ViewModel object manages communication between our ui and the search
 		/// </summary>
-		function ViewModel() {
+		function ViewModel(searchg2Client,searchg2AutocompleteClient) {
 			var self = this;
+			self.searchClient = searchg2Client;
+			self.autocompleteClient = searchg2AutocompleteClient;
 			self.query = ko.observable("");
 			self.lastQuery = ko.observable("");
 			self.page = ko.observable(1);
@@ -207,7 +199,7 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 					self.result(false);
 
 					// Run the query, and queue up our function to run when the results are ready
-					cps.query(self.query(), self.page(), self.filterQueries(), self.id())
+					self.searchClient.query(self.query(), self.page(), self.filterQueries(), self.id())
 						.done(function (data) {
 							// We can make updates to the data before it is consumed by the page here
 							// E.g. here we will limit facets to 5 suggestions (10 pairs) per facet
@@ -257,7 +249,9 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 						self.id("");
 						self.search();
 						// Hide the autocomplete popup if it was showing
-						cpa.hide();
+						if(self.autocompleteClient !== undefined) {
+							self.autocompleteClient.hide();
+						}
 					}
 				},
 				self.suggestion = function (suggestion) {
@@ -319,11 +313,23 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 				return ko.bindingHandlers.foreach.update(element, valueAccessor, allBindings, viewModel, bindingContext);
 			}
 		};
+	</script>
 
-		// Initialise knockout
-		var vm = new ViewModel();
-		ko.applyBindings(vm);
-		
+
+	<script>
+		// Set some properties on the CrownPeakSearch object
+		var cps = new CrownPeakSearch();
+		cps.collection("www.crownpeak.com"); 
+		//cps.facets(["title", "type"]);
+		//cps.maxFacets(6);
+		cps.highlight(true);
+		//cps.endpoint("%%PROTOCOL%%//searchg2-restricted.crownpeak.net/%%COLLECTION%%/%%HANDLER%%?%%QUERY%%")
+		//cps.searchProxy("http://atchubb-canada-dev.cphostaccess.com/searchg2proxy.ashx?q=%%URLENCODED%%");
+		cps.sort(["custom_dt_article_date desc"]);
+		//cps.rows(2);
+		cps.spellcheck(true);
+		//cps.parameters("&hl=true&hl.fl=*");
+
 		// Connect the autocomplete functionality to our input box
 		var cpa = new CrownPeakAutocomplete();
 		cpa.init(document.getElementById("searchInput"), {
@@ -337,6 +343,12 @@ THIS SOFTWARE IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY
 			}
 		});
 
+		// Initialise the viewmodel and knockout
+		var vm = new ViewModel(cps,cpa);
+		ko.applyBindings(vm);
+		
+		//call search if you want results displayed immediately
+		//vm.search();
 	</script>
 
 </body>
