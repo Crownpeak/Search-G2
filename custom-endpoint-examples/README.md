@@ -2,15 +2,14 @@ _Note: By default, Custom Endpoints are not available unless explicitly requeste
 
 ## Crownpeak SearchG2 Custom Endpoint Best Practice Examples
 
-Customers may want to have total control over the way that their data is indexed by Solr. For this purpose Crownpeak provides SearchG2 Custom Endpoints.
-
+Customers may may want to insert data directly into a Solr collection rather than being required to pass it through Crownpeak DXM. For this purpose Crownpeak provides SearchG2 Custom Endpoints.
 ***
 
 ## Crownpeak Search Custom Endpoint Content Architecture
 
 Crownpeak Search G2 Custom Endpoints work by restricting access to an entire Crownpeak Search G2 Collection. In order to interact with Crownpeak Search G2 Custom Endpoints, a request **MUST** be made:
 
-* Using HTTPS (i.e. https://searchg2.crownpeak.net/{crownpeak\_searchg2\_collection\_name}/{query};
+* Using HTTPS (i.e. https://searchg2.crownpeak.net/{crownpeak_searchg2_collection_name}/{query};
 * Using TLS1.2;
 * Supplying both the correct client username and password to the request.
 
@@ -27,30 +26,30 @@ However, if you are using JavaScript then requests can be send to Solr using the
 
 In order to keep these examples very simple, we're going to use the standard command-line utility of cURL
 
-## Adding a single document
-    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak\_searchg2\_collection\_name}/update' --data-binary '
-    {
-        "id": "1",
-        "title": "Doc 1"
-    }'
+### Adding a single document
+    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak_searchg2_collection_name}/update' --data-binary '
+    [
+        {
+            "id": "1",
+            "title": "Doc 1",
+            "url": "http://pageUrl1"
+        }
+    ]'
 
-## Adding multiple documents
-    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak\_searchg2\_collection\_name}/update' --data-binary '
-    {
-        "add": {
-            "doc": {
-                "id": "1",
-                "title": "Doc 1"
-            }
+### Adding multiple documents
+    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak_searchg2_collection_name}/update' --data-binary '
+    [
+        {
+            "id": "1",
+            "title": "Doc 1",
+            "url": "http://pageUrl1"
         },
-        "add": {
-            "doc": {
-                "id": "2",
-                "title": "Doc 2"
-            }
-        },
-        "commit": {}
-    }'
+        {
+            "id": "2",
+            "title": "Doc 2",
+            "url": "http://pageUrl2"
+        }
+    ]'
  
 ***
 _Note: standard Solr options that enable the user to change the functionality of both 'optimize' and 'commit'-type (e.g. 'commit', 'commitWithin' and so on) commands are ignored by SearchG2 Custom Endpoints, and system defaults are used instead)._
@@ -58,10 +57,16 @@ _Note: standard Solr options that enable the user to change the functionality of
 _An update command containing:
     `{ ..
         "commitWithin": 5000','"optimize": {"waitSearcher: false"}' ..
-    }` will be treated the same as `{ "commit": {} }`_
+    }` will be treated the same as `{ "commit": {} }`
 
-## Deleting documents 
-Deletes are very similar to 
+### Deleting documents 
+Delete operations are simpler than update operations and require that the JSON message requires the id or ids to be listed after the delete command:
+    
+    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak_searchg2_collection_name}/update' --data-binary '
+        { "delete": {"id": "id1"} }'
+    
+    curl -X POST -H 'Content-Type: application/json' -u username:password 'https://searchg2.crownpeak.net/{crownpeak_searchg2_collection_name}/update' --data-binary '
+        { "delete": ["id1", "id2"] }'
 
 ***
 ## Disclaimer

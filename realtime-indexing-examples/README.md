@@ -11,7 +11,7 @@ Realtime Indexing provides the following advantages:
 * Indexing & querying protected content that cannot be deployed to the delivery environment for security reasons.
 * Choosing not to use site crawling at all.
 
-_NOTE: When using Realtme Indexing, if you additionally use the Search G2 Crawler to obtain content from another source, you should use a separate Search G2 Collection, and NOT share with content that is sourced from a crawl operation._
+_NOTE: When using Realtime Indexing, if you additionally use the Search G2 Crawler to obtain content from another source, you should use a separate Search G2 Collection, and NOT share with content that is sourced from a crawl operation._
 
 ***
 

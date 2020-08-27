@@ -100,6 +100,12 @@ See [Crownpeak Search G2 SDK Best Practice Examples](search-g2-sdk-javascript-ex
 
 ***
 
+## Search G2 Custom Endpoints
+
+Crownpeak Search provides the option to have access to a secure, hosted Solr collection. See [Crownpeak Search G2 Custom Endpoints Best Practice Examples](custom-endpoint-examples/README.md) for further information.
+
+***
+
 ## Disclaimer
 
 THIS SITE IS EXPERIMENTAL AND MAY BE REMOVED AT ANY TIME.
