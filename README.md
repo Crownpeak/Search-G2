@@ -2,24 +2,24 @@
 
 # Crownpeak Search G2 Best Practice Examples
 
-CrownPeak's Search platform is a highly-scalable, high-performance, enterprise-grade indexing & query platform, based upon the Apache Lucene Software Library & Apache SolrCloud. CrownPeak Search is available to all customers within the CrownPeak subscription at no additional cost.
+Crownpeak's Search platform is a highly-scalable, high-performance, enterprise-grade indexing & query platform, based upon the Apache Lucene Software Library & Apache SolrCloud. Crownpeak Search is available to all customers within the Crownpeak subscription at no additional cost.
 
 
-## Benefits of CrownPeak Search G2
+## Benefits of Crownpeak Search G2
 
-* **Fully Managed** - Like the core Content Management, Testing/Targeting/Personalization & Digital Quality Management platforms, CrownPeak Search is fully managed by the CrownPeak team. This means that you don't need to worry about availability, scalability or management. CrownPeak Search benefits from the sale SLA uptime guarantees as all areas of the CrownPeak portfolio.
-* **Enterprise-Grade** - No matter what your data indexing & query requirements, CrownPeak Search ensures the performance, flexibility & security that you would expect from an enterprise-grade platform.
-* **Hyper-Availability** - Like all other CrownPeak portfolio services, CrownPeak Search is designed to be hyper-available. CrownPeak's team of talented engineers ensure that the highest-levels of available are ensured, using techniques such as automatic sharding & replication of your data, as well as active processing of your data across multiple datacenters.
-* **Open Standards** - Apache Lucene is the globally recognized open standard for enterprise search design & execution. CrownPeak Search implements The Apache Lucene Software Library & Apache Solr at its core to ensure that platform adoption is simple across all customers.
-* **Global Support** - With support for any worldwide language, including single, double or multi-byte (UTF-8) character sets, CrownPeak Search will fulfil all of your global search platform requirements.
-* **Auto Language Recognition** - In addition to support for any worldwide language, CrownPeak Search also includes automatic language detection capabilities for over 30 worldwide languages. Automatic language detection allows customers to implement stemming, spell-checking & suggestion capabilities very simply.
-* **Spatial / Geospatial** - CrownPeak Search is fully spatial / geospatial aware, enabling customers to implement geographic enriched search features, such as 'Find an Office' or by ensuring that geographically relevant content is presented to your customer.
-* **Public & Private Content** - Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? CrownPeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
-* **Realtime Indexing** - CrownPeak Search is directly connected to the core Content Management platform, enabling Realtime Indexing of content at publish time - ensuring that the most recent content is always presented to your customer. Realtime Indexing also enables the publication of page-based content to CrownPeak Search, enabling search to play a core part in the navigational experience of your customer to enhance their experience.
-* **Regular & Polite Crawling** - In addition to Realtime Indexing, CrownPeak Search fully supports regular crawling of your website (multiple times per day). Website crawling can help you to provide the best possible search experience across all customer touch-points, by indexing content that is located elsewhere in your organization, yet still relevant to the customer, creating a more rounded experience. CrownPeak Search also respects any rules that you deploy within your robots.txt file, meaning that you have full control over what content is crawled, and how often.
+* **Fully Managed** - Like the core Content Management, Testing/Targeting/Personalization & Digital Quality Management platforms, Crownpeak Search is fully managed by the Crownpeak team. This means that you don't need to worry about availability, scalability or management. Crownpeak Search benefits from the sale SLA uptime guarantees as all areas of the Crownpeak portfolio.
+* **Enterprise-Grade** - No matter what your data indexing & query requirements, Crownpeak Search ensures the performance, flexibility & security that you would expect from an enterprise-grade platform.
+* **Hyper-Availability** - Like all other Crownpeak portfolio services, Crownpeak Search is designed to be hyper-available. Crownpeak's team of talented engineers ensure that the highest-levels of available are ensured, using techniques such as automatic sharding & replication of your data, as well as active processing of your data across multiple datacenters.
+* **Open Standards** - Apache Lucene is the globally recognized open standard for enterprise search design & execution. Crownpeak Search implements The Apache Lucene Software Library & Apache Solr at its core to ensure that platform adoption is simple across all customers.
+* **Global Support** - With support for any worldwide language, including single, double or multi-byte (UTF-8) character sets, Crownpeak Search will fulfil all of your global search platform requirements.
+* **Auto Language Recognition** - In addition to support for any worldwide language, Crownpeak Search also includes automatic language detection capabilities for over 30 worldwide languages. Automatic language detection allows customers to implement stemming, spell-checking & suggestion capabilities very simply.
+* **Spatial / Geospatial** - Crownpeak Search is fully spatial / geospatial aware, enabling customers to implement geographic enriched search features, such as 'Find an Office' or by ensuring that geographically relevant content is presented to your customer.
+* **Public & Private Content** - Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? Crownpeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
+* **Realtime Indexing** - Crownpeak Search is directly connected to the core Content Management platform, enabling Realtime Indexing of content at publish time - ensuring that the most recent content is always presented to your customer. Realtime Indexing also enables the publication of page-based content to Crownpeak Search, enabling search to play a core part in the navigational experience of your customer to enhance their experience.
+* **Regular & Polite Crawling** - In addition to Realtime Indexing, Crownpeak Search fully supports regular crawling of your website (multiple times per day). Website crawling can help you to provide the best possible search experience across all customer touch-points, by indexing content that is located elsewhere in your organization, yet still relevant to the customer, creating a more rounded experience. Crownpeak Search also respects any rules that you deploy within your robots.txt file, meaning that you have full control over what content is crawled, and how often.
 _Note: Website crawling is only available in use-cases where required content is not stored within the Crownpeak CMS._
-* **Standards-Based API** - We know that your teams need to work with standards-based APIs, to ensure that they can do their jobs quickly and efficiently. CrownPeak Search implements a RESTful API for querying, and returns results in JSON or XML, depending on your requirements. This makes it perfect for powering powerful applications, across any channel or device without additional development effort.
-* **Search G2 SDK** - CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
+* **Standards-Based API** - We know that your teams need to work with standards-based APIs, to ensure that they can do their jobs quickly and efficiently. Crownpeak Search implements a RESTful API for querying, and returns results in JSON or XML, depending on your requirements. This makes it perfect for powering powerful applications, across any channel or device without additional development effort.
+* **Search G2 SDK** - Crownpeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
 
 ***
 
@@ -59,7 +59,7 @@ By default, all fields contain single values, however, the following fields can 
 
 ## Private Content
 
-Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? CrownPeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
+Customers want to be able to quickly find content that is relevant to them. Why should this be restricted only to content that is publicly available, making the post-login experience less rewarding? Crownpeak Search fully supports indexing & query of content, regardless of whether it is public or private in nature.
 
 * Enables protected content to be stored;
 * Provides Search *behind* the login gate;
@@ -71,12 +71,12 @@ See [Crownpeak Search G2 Private Content Best Practice Examples](private-content
 
 ## Realtime Indexing
 
-CrownPeak Search's Realtime Indexing provides a direct connection between the CrownPeak CMS & CrownPeak Search. This enables you to build Assets within the CrownPeak CMS for delivery directly to CrownPeak Search upon publication.
+Crownpeak Search's Realtime Indexing provides a direct connection between the Crownpeak CMS & Crownpeak Search. This enables you to build Assets within the Crownpeak CMS for delivery directly to Crownpeak Search upon publication.
 
 Realtime Indexing provides the following advantages:
 
 * Time-critical publications where traditional website crawling is too infrequent for content updates.
-* Storing and returning items that otherwise don't need pages that are published to the delivery environment (e.g. office locations when taking advantage of CrownPeak Search's geo-location capability).
+* Storing and returning items that otherwise don't need pages that are published to the delivery environment (e.g. office locations when taking advantage of Crownpeak Search's geo-location capability).
 * Indexing & querying protected content that cannot be deployed to the delivery environment for security reasons.
 * Choosing not to use site crawling at all.
 
@@ -86,7 +86,7 @@ See [Crownpeak Search G2 Realtime Indexing Best Practice Examples](realtime-inde
 
 ## Search G2 SDK
 
-CrownPeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
+Crownpeak Search includes a fully supported Software Development Kit, enabling you to on-board quickly, and with less technical involvement than many search platforms.
 
 * Makes implementation simple.
 * Wraps-up the standard Lucene features offed by Search G2.
@@ -97,6 +97,12 @@ CrownPeak Search includes a fully supported Software Development Kit, enabling y
 * Keep version numbers for backwards compatibility.
 
 See [Crownpeak Search G2 SDK Best Practice Examples](search-g2-sdk-javascript-examples/README.md) for further information.
+
+***
+
+## Search G2 Custom Endpoints
+
+Crownpeak Search provides the option to have access to a secure, hosted Solr collection. See [Crownpeak Search G2 Custom Endpoints Best Practice Examples](custom-endpoint-examples/README.md) for further information.
 
 ***
 
